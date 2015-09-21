@@ -1,4 +1,4 @@
-# Ember-model-decorators
+# Ember Clothier
 
 This README outlines the details of collaborating on this Ember addon.
 

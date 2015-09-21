@@ -1,3 +1,19 @@
-<h2 id="title">Welcome to Ember.js</h2>
+<h1>Ember Clothier</h1>
 
-{{outlet}}
+<h2>record</h2>
+<div>
+  {{model.record.name}}
+  {{model.record.active}}<br>
+  {{input value=model.record.name}}<br>
+  {{input type="checkbox" checked=model.record.active}}
+</div>
+
+<h2>Collection</h2>
+{{#each model.collection as |item|}}
+  <div>
+    {{item.name}}
+    {{item.active}}<br>
+    {{input value=item.name}}<br>
+    {{input type="checkbox" checked=item.active}}
+  </div>
+{{/each}}
