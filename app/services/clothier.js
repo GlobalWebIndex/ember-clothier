@@ -2,7 +2,7 @@ import Ember from 'ember';
 
 export default Ember.Service.extend({
   _getPath: function(model, alias) {
-    var aliasPath = alias ? ':%@'.fmt(alias) : '';
+    var aliasPath = alias ? '/%@'.fmt(alias) : '';
     return 'decorator:%@'.fmt(model._clothierModelName) + aliasPath;
   },
 
