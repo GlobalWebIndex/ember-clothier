@@ -8,6 +8,13 @@
   {{input type="checkbox" checked=model.record.active}}
 </div>
 
+<h2>Ember Object</h2>
+<div>
+  {{model.object.name}}
+  {{model.object.nameLength}}<br>
+  {{input value=model.object.name}}
+</div>
+
 <h2>Collection</h2>
 {{#each model.collection as |item|}}
   <div>

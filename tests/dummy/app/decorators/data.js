@@ -1,3 +1,5 @@
 import ModelDecorator from 'ember-clothier/model-decorator';
 
-export default ModelDecorator.extend();
+export default ModelDecorator.extend({
+  active: false
+});

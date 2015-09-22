@@ -11,11 +11,12 @@ export default Ember.Route.extend(DecoratorMixin, {
     }.bind(this);
 
     var record = createRecord();
-
+    var object = this.container.lookup('model:object');
     var collection = Ember.A([createRecord(), createRecord()]);
 
     return Ember.RSVP.hash({
-      record: record.decorate('activateble'),
+      record: record.decorate(),
+      object: object.decorate(),
       collection: this.decorateCollection(collection, 'activatable')
     });
   }
