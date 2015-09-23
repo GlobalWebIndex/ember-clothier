@@ -9,7 +9,7 @@ function getModelName(model) {
   var modelName = model._modelName || model.constructor.modelName;
 
   if (Ember.isEmpty(modelName)) {
-    Ember.Logger.error('Clothier: Unknown model name key for %@!'.fmt(path));
+    Ember.Logger.error('Clothier: Unknown model name key for %@!'.fmt(model));
   }
 
   return modelName;
