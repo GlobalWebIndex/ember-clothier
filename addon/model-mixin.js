@@ -35,7 +35,7 @@ export default Ember.Mixin.create({
 
    // with specified decorator:
    childrens: DS.hasmany('childrens'),
-   decoratedChildrens: this.decorateHasMany('childrens', 'decoratorname')
+   decoratedChildrens: this.decorateHasMany('childrens', 'decoratorName')
   */
   decorateHasMany: function(collectionKey, alias) {
     return c(collectionKey, function() {
@@ -57,7 +57,7 @@ export default Ember.Mixin.create({
 
    // with specified decorator:
    childrens: ds.belongsTo('parent'),
-   decoratedParent: this.decoraBelonsTo('parent', 'decoratorname')
+   decoratedParent: this.decoraBelonsTo('parent', 'decoratorName')
   */
   decorateBelongsTo: function(modelName, alias) {
     return c(modelName, function() {
