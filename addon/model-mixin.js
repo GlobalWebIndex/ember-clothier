@@ -19,5 +19,15 @@ export default Ember.Mixin.create({
       Ember.Logger.error('Clothier: Model name is unknown! Returning plain model instance!');
       return this;
     }
+  },
+
+  decorateHasMany: function(collectionName, alias) {
+    var collection = this.get(collectionName);
+    return this.clothier.createCollection(collection, alias);
+  },
+
+  decorateBelongsTo: function(modelName, alias) {
+    var model = this.get(modelName);
+    return this.clothier.create(model, alias);
   }
 });
