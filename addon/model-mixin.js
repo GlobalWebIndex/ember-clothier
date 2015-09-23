@@ -1,6 +1,11 @@
 import Ember from 'ember';
+import { create, createCollection } from './utils';
 
 export default Ember.Mixin.create({
+  /*
+   * Setup clothier model key
+   * @return void
+   */
   _initClothier: Ember.on('init', function() {
     this._clothierModelName = this.constructor.modelName || this.modelName;
     if (!this._validateClothier()) {
@@ -8,26 +13,39 @@ export default Ember.Mixin.create({
     }
   }),
 
+  /*
+   * validate model
+   * @return Boolean
+   */
   _validateClothier: function() {
     return !Ember.isEmpty(this._clothierModelName);
   },
 
+  /*
+   * decorate model
+   * @param alias[String]
+   * @return Object
+   * USAGE:
+
+   // With default decorator:
+   var record = this.store.find('modelName', id);
+   return record.decorate();
+
+   // With specific decorator:
+   var record = this.store.find('modelName', id);
+   return record.decorate('decoratorName');
+  */
   decorate: function(alias) {
-    if (this._validateClothier()) {
-      return this.clothier.create(this, alias);
-    } else {
-      Ember.Logger.error('Clothier: Model name is unknown! Returning plain model instance!');
-      return this;
-    }
+    return create.bind(this)(this, alias);
   },
 
   decorateHasMany: function(collectionName, alias) {
     var collection = this.get(collectionName);
-    return this.clothier.createCollection(collection, alias);
+    return createCollection.bind(this)(collection, alias);
   },
 
   decorateBelongsTo: function(modelName, alias) {
     var model = this.get(modelName);
-    return this.clothier.create(model, alias);
+    return create.bind(this)(model, alias);
   }
 });
