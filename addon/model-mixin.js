@@ -1,6 +1,8 @@
 import Ember from 'ember';
 import { create, createCollection } from './utils';
 
+const c = Ember.computed;
+
 export default Ember.Mixin.create({
   /*
    * decorate model
@@ -20,13 +22,47 @@ export default Ember.Mixin.create({
     return create.bind(this)(this, alias);
   },
 
-  decorateHasMany: function(collectionName, alias) {
-    var collection = this.get(collectionName);
-    return createCollection.bind(this)(collection, alias);
+  /*
+   * Decorate record in hasMany relation
+   * @param collcetionKey[String]
+   * @param alias[String]
+   * @return Array
+   * Usage:
+
+   // with default decorator:
+   childrens: DS.hasmany('childrens'),
+   decoratedChildrens: this.decorateHasMany('childrens')
+
+   // with specified decorator:
+   childrens: DS.hasmany('childrens'),
+   decoratedChildrens: this.decorateHasMany('childrens', 'decoratorname')
+  */
+  decorateHasMany: function(collectionKey, alias) {
+    return c(collectionKey, function() {
+      var collection = this.get(collectionName);
+      createCollection.bind(this)(collection, alias);
+    });
   },
 
+  /*
+   * Decorate record in belongsTo relation
+   * @param modelName[String]
+   * @param alias[String]
+   * @return Object
+   * USAGE:
+
+   // with default decorator:
+   childrens: DS.belongsTo('parent'),
+   decoratedParent: this.decorateBelongsTo('parent')
+
+   // with specified decorator:
+   childrens: ds.belongsTo('parent'),
+   decoratedParent: this.decoraBelonsTo('parent', 'decoratorname')
+  */
   decorateBelongsTo: function(modelName, alias) {
-    var model = this.get(modelName);
-    return create.bind(this)(model, alias);
+    return c(modelName, function() {
+      var model = this.get(modelName);
+      return create.bind(this)(model, alias);
+    });
   }
 });
