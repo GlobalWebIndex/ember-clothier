@@ -1,13 +1,28 @@
 import Ember from 'ember';
 
 /*
+ * get model name (key for default decorator)
+ * @param model[Object]
+ * @return String
+ */
+function getModelName(model) {
+  var modelName = model._modelName || model.constructor.modelName;
+
+  if (Ember.isEmpty(modelName)) {
+    Ember.Logger.error('Clothier: Unknown model name key for %@!'.fmt(path));
+  }
+
+  return modelName;
+};
+
+/*
  * generate lookup path
  * @param model[Object]
  * @param alias[String]
  * @return String
  */
 function getPath(model, alias) {
-  alias = alias || model._clothierModelName;
+  alias = alias || getModelName(model);
   return 'decorator:%@'.fmt(alias);
 };
 
@@ -22,8 +37,8 @@ export function create(model, alias) {
   var Decorator = this.container.lookupFactory(path);
 
   if (Ember.isEmpty(Decorator)) {
-    Ember.Logger.error('Decorator was not found %@!'.fmt(path));
-  };
+    Ember.Logger.error('Clothier: Decorator was not found %@!'.fmt(path));
+  }
 
   return Decorator.create({ content: model});
 };
