@@ -39,7 +39,7 @@ export default Ember.Mixin.create({
   */
   decorateHasMany: function(collectionKey, alias) {
     return c(collectionKey, function() {
-      var collection = this.get(collectionName);
+      var collection = this.get(collectionKey);
       createCollection.bind(this)(collection, alias);
     });
   },
