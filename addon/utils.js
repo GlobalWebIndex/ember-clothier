@@ -13,7 +13,7 @@ function getModelName(model) {
   }
 
   return modelName;
-};
+}
 
 /*
  * generate lookup path
@@ -24,7 +24,7 @@ function getModelName(model) {
 function getPath(model, alias) {
   alias = alias || getModelName(model);
   return 'decorator:%@'.fmt(alias);
-};
+}
 
 /*
  * Create Decorator instance
@@ -41,7 +41,7 @@ export function create(model, alias) {
   }
 
   return Decorator.create({ content: model});
-};
+}
 
 /*
  * Create collection of decorators
@@ -53,4 +53,4 @@ export function createCollection(collection, alias) {
   return collection.map(function(model) {
     return create.bind(this)(model, alias);
   }.bind(this));
-};
+}
