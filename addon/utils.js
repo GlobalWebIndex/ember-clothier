@@ -9,7 +9,7 @@ function getModelName(model) {
   var modelName = model._modelName || model.constructor.modelName;
 
   if (Ember.isEmpty(modelName)) {
-    Ember.Logger.error('Clothier: Unknown model name key for %@!'.fmt(model));
+    Ember.Logger.error('Clothier: Unknown model name key for ${modelName}!');
   }
 
   return modelName;
@@ -23,7 +23,7 @@ function getModelName(model) {
  */
 function getPath(model, alias) {
   alias = alias || getModelName(model);
-  return 'decorator:%@'.fmt(alias);
+  return 'decorator:' + alias;
 }
 
 /*
@@ -37,7 +37,7 @@ export function create(model, alias) {
   var Decorator = this.container.lookupFactory(path);
 
   if (Ember.isEmpty(Decorator)) {
-    Ember.Logger.error('Clothier: Decorator was not found %@!'.fmt(path));
+    Ember.Logger.error('Clothier: Decorator was not found' + path + '!');
   }
 
   return Decorator.create({ content: model});
