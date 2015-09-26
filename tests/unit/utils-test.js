@@ -27,7 +27,7 @@ module('ember-clothier/utils', {
     App.registry.register('model:data-model', DataModel);
     App.registry.register('decorator:activatable', ActivatableDecorator);
 
-    var store = App.__container__.lookup('store:application');
+    var store = App.registry.lookup('store:application');
 
     Ember.run(function() {
       dataModel = store.createRecord('dataModel', { name: 'name' });
