@@ -1,33 +1,68 @@
 import Ember from 'ember';
+import { create, createCollection } from './utils';
+
+const c = Ember.computed;
 
 export default Ember.Mixin.create({
-  _initClothier: Ember.on('init', function() {
-    this._clothierModelName = this.constructor.modelName || this.modelName;
-    if (!this._validateClothier()) {
-      Ember.Logger.warn('Clothier: Model name is unknown!');
-    }
-  }),
+  /*
+   * decorate model
+   * @param alias[String]
+   * @return Object
+   * USAGE:
 
-  _validateClothier: function() {
-    return !Ember.isEmpty(this._clothierModelName);
-  },
+   // With default decorator:
+   var record = this.store.find('modelName', id);
+   return record.decorate();
 
+   // With specific decorator:
+   var record = this.store.find('modelName', id);
+   return record.decorate('decoratorName');
+  */
   decorate: function(alias) {
-    if (this._validateClothier()) {
-      return this.clothier.create(this, alias);
-    } else {
-      Ember.Logger.error('Clothier: Model name is unknown! Returning plain model instance!');
-      return this;
-    }
-  },
-
-  decorateHasMany: function(collectionName, alias) {
-    var collection = this.get(collectionName);
-    return this.clothier.createCollection(collection, alias);
-  },
-
-  decorateBelongsTo: function(modelName, alias) {
-    var model = this.get(modelName);
-    return this.clothier.create(model, alias);
+    return create.bind(this)(this, alias);
   }
 });
+
+/*
+ * Decorate record in hasMany relation
+ * @param collcetionKey[String]
+ * @param alias[String]
+ * @return Array
+ * Usage:
+
+ // with default decorator:
+ childrens: DS.hasmany('childrens'),
+ decoratedChildrens: this.decorateHasMany('childrens')
+
+ // with specified decorator:
+ childrens: DS.hasmany('childrens'),
+ decoratedChildrens: decorateHasMany('childrens', 'decoratorName')
+*/
+export function decorateHasMany(collectionKey, alias) {
+  return c(collectionKey, function() {
+    var collection = this.get(collectionKey);
+    return createCollection.bind(this)(collection, alias);
+  });
+}
+
+  /*
+   * Decorate record in belongsTo relation
+   * @param modelName[String]
+   * @param alias[String]
+   * @return Object
+   * USAGE:
+
+   // with default decorator:
+   childrens: DS.belongsTo('parent'),
+   decoratedParent: this.decorateBelongsTo('parent')
+
+   // with specified decorator:
+   childrens: DS.belongsTo('parent'),
+   decoratedParent: decoraBelonsTo('parent', 'decoratorName')
+  */
+export function decorateBelongsTo(modelName, alias) {
+  return c(modelName, function() {
+    var model = this.get(modelName);
+    return create.bind(this)(model, alias);
+  });
+}
