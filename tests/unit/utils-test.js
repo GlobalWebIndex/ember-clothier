@@ -2,6 +2,7 @@ import { module, test } from 'qunit';
 import Decorator from 'ember-clothier/model-decorator';
 import { _getPath, _getModelName, create, createCollection } from 'ember-clothier/utils';
 import startApp from '../helpers/start-app';
+import DS from 'ember-data';
 import Ember from 'ember';
 
 var App, ObjectModel, dataModel, dataModelWithKey;
