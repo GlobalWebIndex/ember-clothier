@@ -5,11 +5,11 @@ import Ember from 'ember';
  * @param model[Object]
  * @return String
  */
-function getModelName(model) {
+export function _getModelName(model) {
   var modelName = model._modelName || model.constructor.modelName;
 
   if (Ember.isEmpty(modelName)) {
-    Ember.Logger.error('Clothier: Unknown model name key for %@!'.fmt(model));
+    Ember.Logger.error('Clothier: Unknown model name key for' + modelName + '!');
   }
 
   return modelName;
@@ -21,9 +21,9 @@ function getModelName(model) {
  * @param alias[String]
  * @return String
  */
-function getPath(model, alias) {
-  alias = alias || getModelName(model);
-  return 'decorator:%@'.fmt(alias);
+export function _getPath(model, alias) {
+  alias = alias || _getModelName(model);
+  return 'decorator:' + alias;
 }
 
 /*
@@ -33,11 +33,11 @@ function getPath(model, alias) {
  * @return Object
  */
 export function create(model, alias) {
-  var path = getPath.bind(this)(model, alias);
+  var path = _getPath.bind(this)(model, alias);
   var Decorator = this.container.lookupFactory(path);
 
   if (Ember.isEmpty(Decorator)) {
-    Ember.Logger.error('Clothier: Decorator was not found %@!'.fmt(path));
+    Ember.Logger.error('Clothier: Decorator was not found' + path + '!');
   }
 
   return Decorator.create({ content: model});
