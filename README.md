@@ -286,8 +286,8 @@ export default DS.Model.extend({
   categories: DS.hasMany('categories'),
 
   // decorated relationships
-  decoratedAuthor: decorateBelongsTo('author'),
-  decoratedCategories: decorateHasMany('categories')
+  searchableAuthor: decorateBelongsTo('author', 'searchable'),
+  searchableCategories: decorateHasMany('categories', 'searchable')
 });
 ```
 
