@@ -132,7 +132,7 @@ import DecoratorMixin from 'ember-clothier/route-mixin';
 
 export default Ember.Route.extend(DecoratorMixin, {
   model: function() {
-    return this.decorateCollection(this.store.find('modelName'));
+    return this.decorate(this.store.find('modelName'));
   }
 })
 ```
@@ -267,8 +267,8 @@ export default Ember.Route.extend({
 With Clothier it is simple to decorate both objects and collections.
 There are two basic mixins which implements methods for creating decorators instances.
 `ModelMixin` implements `decorate()` method for decorating model instances and helpers for decorating its relationships (see below).
-`RouteMixin` implements `decorateModel()` and `decorateCollection()` methods for both **objects and collections**.
-The difference is that Route methods takes two arguments where first one is model or collection of instances.
+`RouteMixin` implements `decorate()` method for decorating both **objects and collections**.
+The difference is that Route methods takes two arguments where first one is model or collection and second one is alias (name) of decorator.
 See Api Documentation for more informations.
 
 ## Decorating relationships
@@ -297,15 +297,14 @@ You can easily use this the with plain `Ember.Object` models or any other Model 
 
 ## Api Documentation
 
-| Class/Helper      | Method             | Import from | Arguments                                     | Return                     |
-| ------------      | ------             | ----------- | ---------                                     | ------                     |
-| RouteMixin        |                    | route-mixin |                                               |                            |
-|                   | decorateModel      |             | modelInstance[Object], decoratorAlias[String] | decoratedModel[Object]     |
-|                   | decorateCollection |             | collection[Array], decoratorAlias[String]     | decoratedCollection[Array] |
-| ModelMixin        |                    | model-mixin |                                               |                            |
-|                   | decorate           |             | decoratorAlias[String]                        | decoratedModel[Object]     |
-| decorateBelongsTo |                    | model-mixin | relationKey[String], decoratorAlias[String]   | Ember.computed             |
-| decorateHasMany   |                    | model-mixin | relationKey[String], decoratorAlias[String]   | Ember.computed             |
+| Class/Helper      | Method   | Import from | Arguments                                   | Return                 |
+| ------------      | ------   | ----------- | ---------                                   | ------                 |
+| RouteMixin        |          | route-mixin |                                             |                        |
+|                   | decorate |             | model[Array/Object], decoratorAlias[String] | decoratedModel[Object] |
+| ModelMixin        |          | model-mixin |                                             |                        |
+|                   | decorate |             | decoratorAlias[String]                      | decoratedModel[Object] |
+| decorateBelongsTo |          | model-mixin | relationKey[String], decoratorAlias[String] | Ember.computed         |
+| decorateHasMany   |          | model-mixin | relationKey[String], decoratorAlias[String] | Ember.computed         |
 
 **Examples of imports:**
 ```javascript
