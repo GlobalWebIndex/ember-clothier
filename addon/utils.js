@@ -54,3 +54,17 @@ export function createCollection(collection, alias) {
     return create.bind(this)(model, alias);
   }.bind(this));
 }
+
+/*
+ * Decorate collection or Object
+ * @param forDecoration[Array/Object]
+ * @param alias[String]
+ * @return Array/Object
+ */
+export function decorate(forDecoration, alias) {
+  if (Ember.typeOf(forDecoration) === 'array') {
+    return createCollection.bind(this)(forDecoration, alias);
+  } else {
+    return create.bind(this)(forDecoration, alias);
+  }
+}

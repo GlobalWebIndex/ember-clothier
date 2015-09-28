@@ -17,7 +17,7 @@ export default Ember.Route.extend(DecoratorMixin, {
     return Ember.RSVP.hash({
       record: record.decorate('active'),
       object: object.decorate(),
-      collection: this.decorateCollection(collection)
+      collection: this.decorate(collection)
     });
   }
 });
