@@ -352,3 +352,10 @@ NPM test uses ember-try for testing addon against multiple versions of Ember and
 ## Building
 
 * `ember build`
+
+## About GlobalWebIndex
+
+![globalwebindex](http://cdn2.hubspot.net/hub/304927/file-1322557315-png/2014_Theme/Images/gwi-logo.png?t=1443613449403 =350x)
+
+Ember Clothier is maintained by GlobalWebIndex Ltd. See more about us at [www.globalwebindex.net](https://www.globalwebindex.net)
+
