@@ -46,7 +46,7 @@ export default DS.Model.extend({
 import Ember from 'ember';
 
 export default Ember.Route.extend({
-  model: function(params) {
+  model(params) {
     return this.store.findRecord('modelName', params.modelId);
   }
 });
@@ -63,9 +63,9 @@ export default Ember.Route.extend({
 import ModelDecorator from 'ember-clothier/model-decorator';
 
 export default ModelDecorator.extend({
-  formatedDate: function() {
+  formatedDate: Ember.computed('createdOn', function() {
     return moment(this.get(date)).format('Do MMMM YYYY');
-  }.property('createdOn')
+  })
 });
 ```
 
@@ -84,8 +84,8 @@ export default DS.Model.extend(ModelMixin, {
 import Ember from 'ember';
 
 export default Ember.Route.extend({
-  model: function(params) {
-    return this.store.find('modelName', params.modelId).decorate('date');
+  model(params) {
+    return this.store.findRecord('modelName', params.modelId).decorate('date');
   }
 });
 ```
@@ -109,7 +109,7 @@ import ModelDecorator from 'ember-clothier/model-decorator';
 
 export default ModelDecorator.extend({
   isActive: false, // default value is false
-  toggleActive: function() {
+  toggleActive() {
     this.toggleProperty('isActive');
   }
 });
@@ -131,8 +131,8 @@ import Ember from 'ember';
 import DecoratorMixin from 'ember-clothier/route-mixin';
 
 export default Ember.Route.extend(DecoratorMixin, {
-  model: function() {
-    return this.decorate(this.store.find('modelName'));
+  model() {
+    return this.decorate(this.store.findRecord('modelName'));
   }
 })
 ```
@@ -142,11 +142,11 @@ export default Ember.Route.extend(DecoratorMixin, {
 import Ember from 'ember';
 
 export default Ember.View.extend({
-  activeItems: function() {
+  activeItems: Ember.computed('model.@each.isActive', function() {
     return this.get('model').filterProperty('isActive', true);
-  }.property('model.@each.isActive'),
+  }),
   actions: {
-    clickOnItem: function(item) {
+    clickOnItem(item) {
       item.toggleActive();
     }
   }
@@ -204,14 +204,14 @@ import ModelDecorator from 'ember-clothier/model-decorator';
 export default ModelDecorator.extend({
 
   // decorate model with full name attribute
-  fullName: function() {
+  fullName: Ember.computed('firstName', 'lastName', function() {
     return this.get('firstName') + this.get('lastName');
-  }.property('firstName', 'lastName'),
+  }),
 
   // handle state in menu
   isActiveInMenu: false,
 
-  changeInMenu: function() {
+  changeInMenu() {
     this.toggleProperty('isActiveInMenu');
   }
 });
@@ -252,10 +252,10 @@ import Ember from 'ember';
 import UserModel from '../models/user';
 
 export default Ember.Route.extend({
-  model: function() {
+  model() {
     return UserModel.create({ name: 'Tom Dale' });
   },
-  setupController: function(controller, model) {
+  setupController(controller, model) {
     this._super(controller, model);
     controller.set('user', model.decorate()); // RETURNS MODEL DECORATED WITH USER DECORATOR
     controller.set('menuItem', model.decorate('menu-item')); // RETURNS MODEL DECORATED WITH MENU-ITEM DECORATOR
