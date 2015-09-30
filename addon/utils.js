@@ -62,7 +62,7 @@ export function createCollection(collection, alias) {
  * @return Array/Object
  */
 export function decorate(forDecoration, alias) {
-  if (Ember.typeOf(forDecoration) === 'array') {
+  if (Ember.isArray(forDecoration)) {
     return createCollection.bind(this)(forDecoration, alias);
   } else {
     return create.bind(this)(forDecoration, alias);
