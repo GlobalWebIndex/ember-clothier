@@ -38,11 +38,11 @@ module('ember-clothier/utils', {
 });
 
 test('Decorate record', function(assert) {
-  assert.equal(appRoute.decorateModel(dataModel, 'activatable').get('activated'), true, 'Can decorate model witin route');
+  assert.equal(appRoute.decorate(dataModel, 'activatable').get('activated'), true, 'Can decorate model witin route');
 });
 
 test('Decorate collection', function(assert) {
-  var decoratedCollection = appRoute.decorateCollection([dataModel, dataModel], 'activatable');
+  var decoratedCollection = appRoute.decorate([dataModel, dataModel], 'activatable');
 
   assert.equal(decoratedCollection.length, 2, 'Colelction decorate return array of same length');
   assert.equal(decoratedCollection.get('firstObject.activated'), true, 'Models in collections are decorated');

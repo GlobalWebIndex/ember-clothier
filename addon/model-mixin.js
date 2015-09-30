@@ -39,27 +39,27 @@ export default Ember.Mixin.create({
  decoratedChildrens: decorateHasMany('childrens', 'decoratorName')
 */
 export function decorateHasMany(collectionKey, alias) {
-  return c(collectionKey, function() {
+  return c(collectionKey + '.@each', function() {
     var collection = this.get(collectionKey);
     return createCollection.bind(this)(collection, alias);
   });
 }
 
-  /*
-   * Decorate record in belongsTo relation
-   * @param modelName[String]
-   * @param alias[String]
-   * @return Object
-   * USAGE:
+/*
+ * Decorate record in belongsTo relation
+ * @param modelName[String]
+ * @param alias[String]
+ * @return Object
+ * USAGE:
 
-   // with default decorator:
-   childrens: DS.belongsTo('parent'),
-   decoratedParent: this.decorateBelongsTo('parent')
+ // with default decorator:
+ childrens: DS.belongsTo('parent'),
+ decoratedParent: this.decorateBelongsTo('parent')
 
-   // with specified decorator:
-   childrens: DS.belongsTo('parent'),
-   decoratedParent: decoraBelonsTo('parent', 'decoratorName')
-  */
+ // with specified decorator:
+ childrens: DS.belongsTo('parent'),
+ decoratedParent: decoraBelonsTo('parent', 'decoratorName')
+*/
 export function decorateBelongsTo(modelName, alias) {
   return c(modelName, function() {
     var model = this.get(modelName);
