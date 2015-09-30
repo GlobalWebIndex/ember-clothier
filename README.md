@@ -29,7 +29,7 @@ export function formatDate(date) {
   return moment(date).format('Do MMMM YYYY');
 }
 
-export default Ember.Handlebars.makeBoundHelper(formatDate);
+export default Ember.Helper.helper(formatDate);
 ```
 
 ```javascript
