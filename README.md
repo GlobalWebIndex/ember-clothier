@@ -162,7 +162,7 @@ export default Ember.View.extend({
 
 Active items:<br>
 {{#each activeItems as |activeItem|}}
-  {{actveItem.name}}<br>
+  {{activeItem.name}}<br>
 {{/each}}
 ```
 
