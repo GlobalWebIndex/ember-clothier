@@ -311,10 +311,10 @@ You can easily use this the with plain `Ember.Object` models or any other Model 
 // RouteMixin
 import DecoratorRouteMixin from 'ember-clothier/route-mixin';
 
-// ModelaMixin
+// ModelMixin
 import DecoratorModelMixin from 'ember-clothier/model-mixin';
 
-// decorateBelongTo
+// decorateBelongsTo
 import { decorateBelongsTo } from 'ember-clothier/model-mixin';
 
 // decorateHasMany
