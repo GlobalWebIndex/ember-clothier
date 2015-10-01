@@ -185,7 +185,7 @@ This plugin is compatible with various version of Ember and Ember Data.
 | Ember 1.13.x           | OK              |
 | Ember 2.x.x            | no              |
 
-**Ember 2 compatibility comming soon!**
+**Ember 2 compatibility coming soon!**
 
 | Ember Data version                | compatibility |
 | ------------------                | ------------- |
@@ -278,7 +278,7 @@ See this simple example:
 
 ```javascript
 import DS from 'ember-data';
-import ModelMixin, { decorateBelongsTo, decorateHasMany } from 'ember-cothier/model-mixin';
+import ModelMixin, { decorateBelongsTo, decorateHasMany } from 'ember-clothier/model-mixin';
 
 export default DS.Model.extend({
   name: DS.attr('string'),
@@ -329,7 +329,7 @@ Dependencies:
 
 clone source:
 ```shell
-$ git clone git://github.com/globalwebindex/ember-clothier.git`
+$ git clone git://github.com/globalwebindex/ember-clothier.git
 ```
 
 install dependencies:
