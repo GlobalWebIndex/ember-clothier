@@ -171,7 +171,7 @@ Active items:<br>
 Install via npm:
 
 ```shell
-npm install --save-dev embert-clothier
+npm install --save-dev ember-clothier
 ```
 
 ## Compatibility
