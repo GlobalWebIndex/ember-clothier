@@ -18,7 +18,7 @@ export default Ember.Mixin.create({
    var record = this.store.find('modelName', id);
    return record.decorate('decoratorName');
   */
-  decorate: function(alias) {
+  decorate(alias) {
     return create.bind(this)(this, alias);
   }
 });

@@ -2,13 +2,13 @@ import Ember from 'ember';
 import DecoratorMixin from 'ember-clothier/route-mixin';
 
 export default Ember.Route.extend(DecoratorMixin, {
-  model: function() {
-    var createRecord = function() {
+  model() {
+    const createRecord = () => {
       return this.store.createRecord('data', {
         name: 'ember data record',
         description: 'description'
       });
-    }.bind(this);
+    };
 
     var record = createRecord();
     var object = this.container.lookup('model:object');
