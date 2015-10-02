@@ -47,3 +47,7 @@ test('Decorate collection', function(assert) {
   assert.equal(decoratedCollection.length, 2, 'Colelction decorate return array of same length');
   assert.equal(decoratedCollection.get('firstObject.activated'), true, 'Models in collections are decorated');
 });
+
+test('It can handle undefined', function(assert) {
+  assert.equal(appRoute.decorate(undefined, 'activatable').get('activatable'), undefined, 'undefined do not break functionality');
+});
