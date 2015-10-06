@@ -5,7 +5,7 @@ import startApp from '../helpers/start-app';
 import DS from 'ember-data';
 import Ember from 'ember';
 
-var App, parentModel, childModel1, childModel2;
+var App, parentModel, childModel1, childModel2, store;
 module('ember-clothier/model-mixin', {
   beforeEach: function() {
     App = startApp();
@@ -32,7 +32,7 @@ module('ember-clothier/model-mixin', {
     App.registry.register('model:child-model', ChildModel);
     App.registry.register('decorator:activatable', ActivatableDecorator);
 
-    var store = App.__container__.lookup('store:application');
+    store = App.__container__.lookup('store:application');
 
     Ember.run(function() {
       parentModel = store.createRecord('parentModel', { name: 'name' });
@@ -56,4 +56,32 @@ test('Decorating hasMany relationships', function(assert) {
 
 test('Decorating belongsTo relationships', function(assert) {
   assert.equal(childModel1.get('activatableParent.activated'), true, 'Model in belonsTo relatioonship is decorated');
+});
+
+test('Push decorator to hasMany relation (ember-data)', function(assert) {
+  var newChildModel, newDecoratedChildModel;
+  Ember.run(() => {
+    newChildModel = store.createRecord('childModel', { name: 'new child' });
+    newDecoratedChildModel = newChildModel.decorate('activatable');
+    parentModel.get('children').addObject(newDecoratedChildModel);
+  });
+
+  andThen(() => {
+    assert.equal(parentModel.get('children').contains(newChildModel), true, 'Decorated record can be add to hasMany relation');
+  });
+});
+
+
+test('Add decorated object to belongsTo relation (ember-data)', function(assert) {
+  var newParentModel, newDecoratedParentModel;
+
+  Ember.run(() => {
+    newParentModel = store.createRecord('parentModel', { name: 'new parent' });
+    newDecoratedParentModel = newParentModel.decorate('activatable');
+    childModel1.set('parent', newDecoratedParentModel);
+  });
+
+  andThen(() => {
+    assert.equal(newParentModel.get('children').contains(childModel1), true, 'Decorated record can be add to belongsTo relation');
+  });
 });

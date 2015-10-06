@@ -3,7 +3,7 @@ import Ember from 'ember';
 const o = Ember.observer;
 const on = Ember.on;
 
-var Decorator = Ember.ObjectProxy.extend({
+export default Ember.ObjectProxy.extend({
   /*
    * Add method from content
    * @param method[function]
@@ -34,7 +34,16 @@ var Decorator = Ember.ObjectProxy.extend({
          this._addMethod(method);
       }
     }
+  })),
+
+  /*
+   * Setup ember data relationship keys
+   */
+  _setupEmberData: on('init', o('content', function() {
+    var content = this.get('content');
+
+    if (Ember.isEmpty(content)) { return; }
+
+    this._internalModel = content._internalModel;
   }))
 });
-
-export default Decorator;
