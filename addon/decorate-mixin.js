@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import { decorate } from './utils';
+import { decorate, computed } from './utils';
 
 export default Ember.Mixin.create({
   /*
@@ -10,7 +10,15 @@ export default Ember.Mixin.create({
    return this.decorate(collection, 'decoratorName');
    */
   decorate(model, alias) {
-    Ember.Logger.warn('route-mixin is depricated. Use imports from decorate-mixin instead! (ember-clothier/decorate-mixin)');
     return decorate.bind(this)(model, alias);
   }
 });
+
+/*
+ * Create computed decorator
+ * USAGE:
+
+ activatables: computeddecorate('model', 'activatable')
+ */
+export const computedDecorate = computed.bind(this);
+
