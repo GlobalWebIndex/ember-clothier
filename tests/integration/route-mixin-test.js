@@ -60,14 +60,30 @@ test('Test decorator computed property', function(assert) {
       decorated: computedDecorate('content', 'activatable')
     });
 
-    appRoute = AppRoute.create();
-
-    appRoute.set('content', [dataModel, dataModel]);
+    appRoute = AppRoute.create({
+      content: [dataModel, dataModel]
+    });
   });
 
   andThen(() => {
-    assert.equal(Ember.isEmpty(appRoute.get('content')), false, 'Content property is not empty');
     assert.equal(Ember.isEmpty(appRoute.get('decorated')), false, 'Computed property is not empty');
     assert.equal(appRoute.get('decorated.firstObject.activated'), true, 'Computed collection is decorated');
+    assert.equal(appRoute.get('decorated').length, 2, 'Default length is 2');
+
+    Ember.run(() => {
+      appRoute.get('content').pushObject(dataModel);
+    });
+  });
+
+  andThen(() => {
+    assert.equal(appRoute.get('decorated').length, 3, 'Can push object to computed decorator');
+
+    Ember.run(() => {
+      appRoute.set('content', dataModel);
+    });
+  });
+
+  andThen(() => {
+    assert.equal(appRoute.get('decorated.activated'), true, 'Object should be also decorated');
   });
 });
