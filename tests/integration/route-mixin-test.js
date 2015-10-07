@@ -1,13 +1,13 @@
 import { module, test } from 'qunit';
 import Decorator from 'ember-clothier/model-decorator';
-import RouteMixin from 'ember-clothier/route-mixin';
+import RouteMixin, { computedDecorate } from 'ember-clothier/route-mixin';
 import startApp from '../helpers/start-app';
 import DS from 'ember-data';
 import Ember from 'ember';
 
 var App, dataModel, appRoute;
-module('ember-clothier/utils', {
-  beforeEach: function() {
+module('ember-clothier/route-mixin', {
+  setup: function() {
     App = startApp();
 
     var DataModel = DS.Model.extend({
@@ -19,20 +19,20 @@ module('ember-clothier/utils', {
       activated: true,
     });
 
-    var ApplicationRoute = Ember.Route.extend(RouteMixin, {});
+    App.ApplicationRoute = Ember.Route.extend(RouteMixin);
 
     App.registry.register('model:data-model', DataModel);
     App.registry.register('decorator:activatable', ActivatableDecorator);
-    App.registry.register('route:application', ApplicationRoute);
+    App.registry.register('route:application', App.ApplicationRoute);
 
-    var store = App.registry.lookup('store:application');
-    appRoute = App.registry.lookup('route:application');
+    var store = App.__container__.lookup('store:application');
+    appRoute = App.__container__.lookup('route:application');
 
     Ember.run(function() {
       dataModel = store.createRecord('dataModel', { name: 'name' });
     });
   },
-  afterEach: function() {
+  tearDown: function() {
     Ember.run(App, 'destroy');
   }
 });
@@ -50,4 +50,24 @@ test('Decorate collection', function(assert) {
 
 test('It can handle undefined', function(assert) {
   assert.equal(appRoute.decorate(undefined, 'activatable').get('activatable'), undefined, 'undefined do not break functionality');
+});
+
+test('Test decorator computed property', function(assert) {
+  Ember.run(() => {
+    var AppRoute = App.__container__.lookupFactory('route:application');
+
+    AppRoute.reopen({
+      decorated: computedDecorate('content', 'activatable')
+    });
+
+    appRoute = AppRoute.create();
+
+    appRoute.set('content', [dataModel, dataModel]);
+  });
+
+  andThen(() => {
+    assert.equal(Ember.isEmpty(appRoute.get('content')), false, 'Content property is not empty');
+    assert.equal(Ember.isEmpty(appRoute.get('decorated')), false, 'Computed property is not empty');
+    assert.equal(appRoute.get('decorated.firstObject.activated'), true, 'Computed collection is decorated');
+  });
 });

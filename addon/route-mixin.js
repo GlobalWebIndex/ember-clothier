@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import { decorate } from './utils';
+import { decorate, createCollection } from './utils';
 
 export default Ember.Mixin.create({
   /*
@@ -21,3 +21,10 @@ export default Ember.Mixin.create({
     return decorate.bind(this)(model, alias);
   }
 });
+
+export function computedDecorate(attribute, alias) {
+  return Ember.computed(attribute + '.@each', function() {
+    var collection = this.get(attribute);
+    return createCollection.bind(this)(collection, alias);
+  });
+}
