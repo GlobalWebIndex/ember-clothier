@@ -1,19 +1,11 @@
 import Ember from 'ember';
-import { decorate } from './utils';
+import { decorate, computed } from './utils';
 
 export default Ember.Mixin.create({
   /*
-   * Get decorated collection/object
-   * @param model[Array/Object] *required
-   * @param alias[String]
-   * @return Array/Object
+   * Create decorated collection/object
    * USAGE:
 
-   // With default decorator:
-   var collection = this.store.find('modelName');
-   return this.decorate(collection);
-
-   // With specific decorator:
    var collection = this.store.find('modelName');
    return this.decorate(collection, 'decoratorName');
    */
@@ -22,9 +14,11 @@ export default Ember.Mixin.create({
   }
 });
 
-export function computedDecorate(attribute, alias) {
-  return Ember.computed(attribute + '.@each', attribute, function() {
-    var subject = this.get(attribute);
-    return decorate.bind(this)(subject, alias);
-  });
-}
+/*
+ * Create computed decorator
+ * USAGE:
+
+ activatables: computeddecorate('model', 'activatable')
+ */
+export const computedDecorate = computed.bind(this);
+

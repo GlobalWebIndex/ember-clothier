@@ -47,3 +47,4 @@ export default Ember.ObjectProxy.extend({
     this._internalModel = content._internalModel;
   }))
 });
+
