@@ -1,6 +1,6 @@
 import { module, test } from 'qunit';
 import Decorator from 'ember-clothier/model-decorator';
-import RouteMixin, { computedDecorate } from 'ember-clothier/route-mixin';
+import DecorateMixin, { computedDecorate } from 'ember-clothier/decorate-mixin';
 import startApp from '../helpers/start-app';
 import DS from 'ember-data';
 import Ember from 'ember';
@@ -19,7 +19,7 @@ module('ember-clothier/route-mixin', {
       activated: true,
     });
 
-    App.ApplicationRoute = Ember.Route.extend(RouteMixin);
+    App.ApplicationRoute = Ember.Route.extend(DecorateMixin);
 
     App.registry.register('model:data-model', DataModel);
     App.registry.register('decorator:activatable', ActivatableDecorator);
@@ -52,3 +52,38 @@ test('It can handle undefined', function(assert) {
   assert.equal(appRoute.decorate(undefined, 'activatable').get('activatable'), undefined, 'undefined do not break functionality');
 });
 
+test('Test decorator computed property', function(assert) {
+  Ember.run(() => {
+    var AppRoute = App.__container__.lookupFactory('route:application');
+
+    AppRoute.reopen({
+      decorated: computedDecorate('content', 'activatable')
+    });
+
+    appRoute = AppRoute.create({
+      content: [dataModel, dataModel]
+    });
+  });
+
+  andThen(() => {
+    assert.equal(Ember.isEmpty(appRoute.get('decorated')), false, 'Computed property is not empty');
+    assert.equal(appRoute.get('decorated.firstObject.activated'), true, 'Computed collection is decorated');
+    assert.equal(appRoute.get('decorated').length, 2, 'Default length is 2');
+
+    Ember.run(() => {
+      appRoute.get('content').pushObject(dataModel);
+    });
+  });
+
+  andThen(() => {
+    assert.equal(appRoute.get('decorated').length, 3, 'Can push object to computed decorator');
+
+    Ember.run(() => {
+      appRoute.set('content', dataModel);
+    });
+  });
+
+  andThen(() => {
+    assert.equal(appRoute.get('decorated.activated'), true, 'Object should be also decorated');
+  });
+});

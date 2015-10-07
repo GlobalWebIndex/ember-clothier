@@ -32,7 +32,7 @@ export function _getPath(model, alias) {
  * @param alias[String]
  * @return Object
  */
-export function create(model, alias) {
+export function _create(model, alias) {
   var path = _getPath.bind(this)(model, alias);
   var Decorator = this.container.lookupFactory(path);
 
@@ -49,22 +49,36 @@ export function create(model, alias) {
  * @param alias[String]
  * @return Array
  */
-export function createCollection(collection, alias) {
+export function _createCollection(collection, alias) {
   return collection.map(function(model) {
-    return create.bind(this)(model, alias);
+    return _create.bind(this)(model, alias);
   }.bind(this));
 }
 
 /*
  * Decorate collection or Object
- * @param forDecoration[Array/Object]
+ * @param subject[Array/Object]
  * @param alias[String]
  * @return Array/Object
  */
-export function decorate(forDecoration, alias) {
-  if (Ember.isArray(forDecoration)) {
-    return createCollection.bind(this)(forDecoration, alias);
+export function decorate(subject, alias) {
+  if (Ember.isArray(subject)) {
+    return _createCollection.bind(this)(subject, alias);
   } else {
-    return create.bind(this)(forDecoration, alias);
+    return _create.bind(this)(subject, alias);
   }
 }
+
+/*
+ * create computed decorator
+ * @param attribute[String]
+ * @param alias[String]
+ * @return Object/Array
+ */
+export function computed(attribute, alias) {
+  return Ember.computed(attribute + '.@each', attribute, function() {
+    var subject = this.get(attribute);
+    return decorate.bind(this)(subject, alias);
+  });
+}
+

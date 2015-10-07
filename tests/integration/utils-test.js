@@ -1,6 +1,6 @@
 import { module, test } from 'qunit';
 import Decorator from 'ember-clothier/model-decorator';
-import { _getPath, _getModelName, create, createCollection, decorate } from 'ember-clothier/utils';
+import { _getPath, _getModelName, _create, _createCollection, decorate } from 'ember-clothier/utils';
 import startApp from '../helpers/start-app';
 import DS from 'ember-data';
 import Ember from 'ember';
@@ -27,7 +27,7 @@ module('ember-clothier/utils', {
     App.registry.register('model:data-model', DataModel);
     App.registry.register('decorator:activatable', ActivatableDecorator);
 
-    var store = App.registry.lookup('store:application');
+    var store = App.__container__.lookup('store:application');
 
     Ember.run(function() {
       dataModel = store.createRecord('dataModel', { name: 'name' });
@@ -56,13 +56,13 @@ test('getPath', function(assert) {
 
 test('create', function(assert) {
   andThen(function() {
-    assert.equal(create.bind(dataModel)(dataModel, 'activatable').get('activated'), true, 'Create decorator instance');
+    assert.equal(_create.bind(dataModel)(dataModel, 'activatable').get('activated'), true, 'Create decorator instance');
   });
 });
 
 test('createCollection', function(assert) {
   andThen(function() {
-    var decoratedCollection = createCollection.bind(dataModel)([dataModel, dataModel], 'activatable');
+    var decoratedCollection = _createCollection.bind(dataModel)([dataModel, dataModel], 'activatable');
 
     assert.equal(Ember.typeOf(decoratedCollection), 'array', 'Create collection returns array');
     assert.equal(decoratedCollection[0].get('activated'), true, 'Collection is decorated');
