@@ -128,11 +128,10 @@ export default DS.Model.extend(ModelMixin, {
 ```javascript
 // routes/application.js
 import Ember from 'ember';
-import DecoratorMixin from 'ember-clothier/route-mixin';
 
-export default Ember.Route.extend(DecoratorMixin, {
+export default Ember.Route.extend({
   model() {
-    return this.decorate(this.store.findRecord('modelName'));
+    return this.store.findRecord('modelName');
   }
 })
 ```
@@ -140,10 +139,13 @@ export default Ember.Route.extend(DecoratorMixin, {
 ```javascript
 // view/application.js
 import Ember from 'ember';
+import DecorateMixin { computedDecorate } from 'ember-clothier/decorate-mixin';
 
-export default Ember.View.extend({
-  activeItems: Ember.computed('model.@each.isActive', function() {
-    return this.get('model').filterProperty('isActive', true);
+export default Ember.View.extend(DecorateMixin, {
+  activatables: computedDecorate('model', 'activatable'),
+
+  activeItems: Ember.computed('activatables.@each.isActive', function() {
+    return this.get('activatables').filterProperty('isActive', true);
   }),
   actions: {
     clickOnItem(item) {
@@ -266,19 +268,19 @@ export default Ember.Route.extend({
 ## Decorating Objects and Collections
 With Clothier it is simple to decorate both objects and collections.
 There are two basic mixins which implements methods for creating decorators instances.
-`ModelMixin` implements `decorate()` method for decorating model instances and helpers for decorating its relationships (see below).
-`RouteMixin` implements `decorate()` method for decorating both **objects and collections**.
-The difference is that Route methods takes two arguments where first one is model or collection and second one is alias (name) of decorator.
+`ModelMixin` implements `decorate()` method for decorating model instances and helper for decorating its relationships (see below).
+`DecorateMixin` implements `decorate()` method for decorating both **objects and collections** and helper for creating computed property for both (see below).
+The difference is that Decorate methods takes two arguments where first one is model or collection and second one is alias (name) of decorator.
 See Api Documentation for more informations.
 
 ## Decorating relationships
-`ModelMixin` comes with two additional helper functions for decorating model relationships.
-This helpers takes two arguments ­ *relationKey* and *decoratorName* and return `Ember.computed` which returns decorated relationship.
+`ModelMixin` comes with additional helper function for decorating model relationships.
+This helper takes two arguments ­ *relationKey* and *decoratorAlias*(name of decorator) and return `Ember.computed` which returns decorated relationship.
 See this simple example:
 
 ```javascript
 import DS from 'ember-data';
-import ModelMixin, { decorateBelongsTo, decorateHasMany } from 'ember-clothier/model-mixin';
+import ModelMixin, { decorateRelation } from 'ember-clothier/model-mixin';
 
 export default DS.Model.extend({
   name: DS.attr('string'),
@@ -286,8 +288,8 @@ export default DS.Model.extend({
   categories: DS.hasMany('categories'),
 
   // decorated relationships
-  searchableAuthor: decorateBelongsTo('author', 'searchable'),
-  searchableCategories: decorateHasMany('categories', 'searchable')
+  searchableAuthor: decorateRelation('author', 'searchable'),
+  searchableCategories: decorateRelation('categories', 'searchable')
 });
 ```
 
@@ -295,24 +297,45 @@ export default DS.Model.extend({
 The only thing which is expected is that first argument is name of model attribute which holds default model/collection in relationship.
 You can easily use this the with plain `Ember.Object` models or any other Model implementation.
 
+## Computed Decorate
+`DecorateMixin` comes with additional helper function for creating computed property for decorating attributes.
+This helper takes two arguments ­ **attributeName** and **decoratorAlias** (decorator name) and return `Ember.computed` which return decorated attribute.
+This property is recomputed ecerytime original property is changed.
+See this simple example:
+
+```javascript
+import Ember from 'ember';
+import DecorateMixin { computedDecorate } from 'ember-clothier/decorate-mixin';
+
+export defualt Ember.Component.extend({
+  // this property is bind from parrent component
+  content: [],
+  searchables: computedDecorate('content', 'searchable')
+});
+```
+
 ## Api Documentation
 
-| Class/Helper      | Method   | Import from | Arguments                                   | Return                 |
-| ------------      | ------   | ----------- | ---------                                   | ------                 |
-| RouteMixin        |          | route-mixin |                                             |                        |
-|                   | decorate |             | model[Array/Object], decoratorAlias[String] | decoratedModel[Object] |
-| ModelMixin        |          | model-mixin |                                             |                        |
-|                   | decorate |             | decoratorAlias[String]                      | decoratedModel[Object] |
-| decorateBelongsTo |          | model-mixin | relationKey[String], decoratorAlias[String] | Ember.computed         |
-| decorateHasMany   |          | model-mixin | relationKey[String], decoratorAlias[String] | Ember.computed         |
+| Class/Helper      | Method   | Import from    | Arguments                                     | Return                 |
+| ------------      | ------   | -----------    | ---------                                     | ------                 |
+| RouteMixin        |          | decorate-mixin |                                               |                        |
+|                   | decorate |                | subject[Array/Object], decoratorAlias[String] | decoratedModel[Object] |
+| computedDecorate  |          | decorate-mixin | attribute[String], decoratorAlias[String]     | Ember.computed         |
+| ModelMixin        |          | model-mixin    |                                               |                        |
+|                   | decorate |                | decoratorAlias[String]                        | decoratedModel[Object] |
+| decorateBelongsTo |          | model-mixin    | relationKey[String], decoratorAlias[String]   | Ember.computed         |
+| decorateHasMany   |          | model-mixin    | relationKey[String], decoratorAlias[String]   | Ember.computed         |
 
 **Examples of imports:**
 ```javascript
-// RouteMixin
-import DecoratorRouteMixin from 'ember-clothier/route-mixin';
+// DecorateMixin
+import DecorateMixin from 'ember-clothier/decorate-mixin';
+
+// computedDecorate
+import { computedDecorate } from 'ember-clothier/computed-decorate';
 
 // ModelMixin
-import DecoratorModelMixin from 'ember-clothier/model-mixin';
+import DecorateModelMixin from 'ember-clothier/model-mixin';
 
 // decorateBelongsTo
 import { decorateBelongsTo } from 'ember-clothier/model-mixin';
@@ -320,6 +343,9 @@ import { decorateBelongsTo } from 'ember-clothier/model-mixin';
 // decorateHasMany
 import { decorateHasMany } from 'ember-clothier/model-mixin';
 ```
+
+## Changelog
+See [CHANGELOG.md](CHANGELOG.md)
 
 ## Building from source
 You can build this addon from source by cloning repository with git.
