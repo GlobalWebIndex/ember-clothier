@@ -29,7 +29,7 @@ export default Ember.ObjectProxy.extend({
 
     if (Ember.isEmpty(content)) { return; }
 
-    for (var method in content) {
+    for (let method in content) {
       if(Ember.typeOf(content[method]) === "function" && Ember.isEmpty(this[method])) {
          this._addMethod(method);
       }
