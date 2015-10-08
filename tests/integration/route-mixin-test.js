@@ -1,6 +1,6 @@
 import { module, test } from 'qunit';
 import Decorator from 'ember-clothier/model-decorator';
-import RouteMixin, { computedDecorate } from 'ember-clothier/route-mixin';
+import RouteMixin from 'ember-clothier/route-mixin';
 import startApp from '../helpers/start-app';
 import DS from 'ember-data';
 import Ember from 'ember';

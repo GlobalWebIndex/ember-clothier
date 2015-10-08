@@ -1,5 +1,8 @@
 # Changelog
 
+###v0.0.4
+- **HOTFIX**: Recursion in method proxies setup
+
 ###v0.0.3
 - **DEPRICATION**: `RouteMixin` will be remove in favour of `DecorateMixin`
 - **DEPRICATION**: `decorateHasMany` will be remove in favour of `decorateRelation`

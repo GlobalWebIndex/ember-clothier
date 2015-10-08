@@ -17,7 +17,7 @@ export default Ember.ObjectProxy.extend({
         return;
       }
 
-      return content[method].apply(this, arguments);
+      return content[method].apply(content, arguments);
     };
   },
 
@@ -31,7 +31,7 @@ export default Ember.ObjectProxy.extend({
 
     for (let method in content) {
       if(Ember.typeOf(content[method]) === "function" && Ember.isEmpty(this[method])) {
-         this._addMethod(method);
+        this._addMethod(method);
       }
     }
   })),
