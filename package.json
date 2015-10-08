@@ -1,6 +1,6 @@
 {
   "name": "ember-clothier",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Clothier adds an object-orientated logic of presentation and state management for your data to your Ember application.",
   "directories": {
     "doc": "doc",
