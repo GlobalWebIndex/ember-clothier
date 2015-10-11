@@ -1,4 +1,8 @@
 # Ember Clothier
+[![wercker status](https://app.wercker.com/status/409c0ee85a54140c6f3e37c28237bc28/s/master "wercker status")](https://app.wercker.com/project/bykey/409c0ee85a54140c6f3e37c28237bc28)
+[![Ember Observer Score](http://emberobserver.com/badges/ember-clothier.svg)](http://emberobserver.com/addons/ember-clothier)
+[![Code Climate](https://codeclimate.com/github/GlobalWebIndex/ember-clothier/badges/gpa.svg)](https://codeclimate.com/github/GlobalWebIndex/ember-clothier)
+
 Clothier adds an **object-orientated logic** of presentation and state management for your data to your Ember application.
 
 Clothier is designed for decorating your data models with presentation logic
