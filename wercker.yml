@@ -12,10 +12,7 @@ build:
         code: |
           bower install --allow-root
 
-    - script:
-      name: ember test
-      code: |
-        node_modules/ember-cli/bin/ember test
+    - npm-test
 
     # A custom script step, name value is used in the UI
     # and the code value contains the command that get executed

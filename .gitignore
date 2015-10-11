@@ -17,3 +17,7 @@ npm-debug.log
 testem.log
 
 bower.json.ember-try
+
+# wercker
+/_builds/
+/_steps/
