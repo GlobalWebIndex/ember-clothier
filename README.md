@@ -139,7 +139,7 @@ export default Ember.Route.extend({
 ```javascript
 // view/application.js
 import Ember from 'ember';
-import DecorateMixin { computedDecorate } from 'ember-clothier/decorate-mixin';
+import DecorateMixin, { computedDecorate } from 'ember-clothier/decorate-mixin';
 
 export default Ember.View.extend(DecorateMixin, {
   activatables: computedDecorate('model', 'activatable'),
@@ -219,7 +219,14 @@ export default ModelDecorator.extend({
 });
 ```
 
-## Aliases and Naming Conventions
+### Decorators support
+Decorators behave like default `Ember.ObjectProxy` but they also support proxing to methods of orginal Object.
+What this means? Basicaly you can call model instance methods on decorator instance and they will be propely delegate to original model.
+If you define method with some name on decorator this proxy will be overwritten so both methods will be available on decorator instance.
+`decorator.method()` calls method defined on decorator where `decorator.get('content').method()` call original metod on model instance.
+Other feature which decorators has out of the box is proxy to `ember-data` meta so even decorator instances should be passed into ember-data relations.
+
+### Aliases and Naming Conventions
 If you do not specify decorator name when decorating object default decorator will be used.
 With Ember Data this is done by using modelName key provided in `DS.Model` instance.
 If you are not using Ember Data you have to specify `_modelName` attribute in your model.
@@ -265,15 +272,7 @@ export default Ember.Route.extend({
 });
 ```
 
-## Decorating Objects and Collections
-With Clothier it is simple to decorate both objects and collections.
-There are two basic mixins which implements methods for creating decorators instances.
-`ModelMixin` implements `decorate()` method for decorating model instances and helper for decorating its relationships (see below).
-`DecorateMixin` implements `decorate()` method for decorating both **objects and collections** and helper for creating computed property for both (see below).
-The difference is that Decorate methods takes two arguments where first one is model or collection and second one is alias (name) of decorator.
-See Api Documentation for more informations.
-
-## Decorating relationships
+### Decorating relationships
 `ModelMixin` comes with additional helper function for decorating model relationships.
 This helper takes two arguments ­ *relationKey* and *decoratorAlias*(name of decorator) and return `Ember.computed` which returns decorated relationship.
 See this simple example:
@@ -297,7 +296,16 @@ export default DS.Model.extend({
 The only thing which is expected is that first argument is name of model attribute which holds default model/collection in relationship.
 You can easily use this the with plain `Ember.Object` models or any other Model implementation.
 
-## Computed Decorate
+
+## Decorating Objects and Collections
+With Clothier it is simple to decorate both objects and collections.
+There are two basic mixins which implements methods for creating decorators instances.
+`ModelMixin` implements `decorate()` method for decorating model instances and helper for decorating its relationships.
+`DecorateMixin` implements `decorate()` method for decorating both **objects and collections** and helper for creating computed property for both (see below).
+The difference is that Decorate methods takes two arguments where first one is model or collection and second one is alias (name) of decorator.
+See Api Documentation for more informations.
+
+### Computed Decorate
 `DecorateMixin` comes with additional helper function for creating computed property for decorating attributes.
 This helper takes two arguments ­ **attributeName** and **decoratorAlias** (decorator name) and return `Ember.computed` which return decorated attribute.
 This property is recomputed ecerytime original property is changed.
@@ -305,7 +313,7 @@ See this simple example:
 
 ```javascript
 import Ember from 'ember';
-import DecorateMixin { computedDecorate } from 'ember-clothier/decorate-mixin';
+import DecorateMixin, { computedDecorate } from 'ember-clothier/decorate-mixin';
 
 export defualt Ember.Component.extend({
   // this property is bind from parrent component
@@ -383,6 +391,6 @@ NPM test uses ember-try for testing addon against multiple versions of Ember and
 
 ![globalwebindex](https://pbs.twimg.com/profile_images/468332770624679937/wd2TMi0i_400x400.png)
 
-Ember Clothier is maintained by GlobalWebIndex Ltd. 
+Ember Clothier is maintained by GlobalWebIndex Ltd.
 
 See more about us at [www.globalwebindex.net](https://www.globalwebindex.net).

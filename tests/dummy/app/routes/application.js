@@ -1,7 +1,7 @@
 import Ember from 'ember';
-import DecoratorMixin from 'ember-clothier/route-mixin';
+import DecorateMixin, { computedDecorate } from 'ember-clothier/decorate-mixin';
 
-export default Ember.Route.extend(DecoratorMixin, {
+export default Ember.Route.extend(DecorateMixin, {
   model() {
     const createRecord = () => {
       return this.store.createRecord('data', {
