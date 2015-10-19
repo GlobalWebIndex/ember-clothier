@@ -33,7 +33,7 @@ export function _getPath(model, alias) {
  * @return Object
  */
 export function _create(model, alias) {
-  var path = _getPath.bind(this)(model, alias);
+  var path = _getPath.call(this, model, alias);
   var Decorator = this.container.lookupFactory(path);
 
   if (Ember.isEmpty(Decorator)) {
@@ -51,7 +51,7 @@ export function _create(model, alias) {
  */
 export function _createCollection(collection, alias) {
   return collection.map(function(model) {
-    return _create.bind(this)(model, alias);
+    return _create.call(this, model, alias);
   }.bind(this));
 }
 
@@ -63,9 +63,9 @@ export function _createCollection(collection, alias) {
  */
 export function decorate(subject, alias) {
   if (Ember.isArray(subject)) {
-    return _createCollection.bind(this)(subject, alias);
+    return _createCollection.call(this, subject, alias);
   } else {
-    return _create.bind(this)(subject, alias);
+    return _create.call(this, subject, alias);
   }
 }
 
@@ -78,7 +78,7 @@ export function decorate(subject, alias) {
 export function computed(attribute, alias) {
   return Ember.computed(attribute + '.@each', attribute, function() {
     var subject = this.get(attribute);
-    return decorate.bind(this)(subject, alias);
+    return decorate.call(this, subject, alias);
   });
 }
 

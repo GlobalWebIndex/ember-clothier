@@ -11,6 +11,6 @@ export default Ember.Mixin.create({
    */
   decorate(model, alias) {
     Ember.Logger.warn('route-mixin is depricated. Use imports from decorate-mixin instead! (ember-clothier/decorate-mixin)');
-    return decorate.bind(this)(model, alias);
+    return decorate.call(this, model, alias);
   }
 });

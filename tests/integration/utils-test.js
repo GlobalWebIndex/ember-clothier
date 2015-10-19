@@ -56,13 +56,13 @@ test('getPath', function(assert) {
 
 test('create', function(assert) {
   andThen(function() {
-    assert.equal(_create.bind(dataModel)(dataModel, 'activatable').get('activated'), true, 'Create decorator instance');
+    assert.equal(_create.call(dataModel, dataModel, 'activatable').get('activated'), true, 'Create decorator instance');
   });
 });
 
 test('createCollection', function(assert) {
   andThen(function() {
-    var decoratedCollection = _createCollection.bind(dataModel)([dataModel, dataModel], 'activatable');
+    var decoratedCollection = _createCollection.call(dataModel, [dataModel, dataModel], 'activatable');
 
     assert.equal(Ember.typeOf(decoratedCollection), 'array', 'Create collection returns array');
     assert.equal(decoratedCollection[0].get('activated'), true, 'Collection is decorated');
@@ -71,9 +71,9 @@ test('createCollection', function(assert) {
 
 test('decorate', function(assert) {
   andThen(function() {
-    assert.equal(decorate.bind(dataModel)(dataModel, 'activatable').get('activated'), true, 'Create decorator instance');
+    assert.equal(decorate.call(dataModel, dataModel, 'activatable').get('activated'), true, 'Create decorator instance');
 
-    var decoratedCollection = decorate.bind(dataModel)([dataModel, dataModel], 'activatable');
+    var decoratedCollection = decorate.call(dataModel, [dataModel, dataModel], 'activatable');
 
     assert.equal(Ember.typeOf(decoratedCollection), 'array', 'Create collection returns array');
     assert.equal(decoratedCollection[0].get('activated'), true, 'Collection is decorated');

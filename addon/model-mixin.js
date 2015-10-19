@@ -12,7 +12,7 @@ export default Ember.Mixin.create({
    return record.decorate('decoratorName');
    */
   decorate(alias) {
-    return decorate.bind(this)(this, alias);
+    return decorate.call(this, this, alias);
   }
 });
 
@@ -34,7 +34,7 @@ decoratedChildrens: decorateHasMany('childrens', 'decoratorName')
 */
 export const decorateHasMany = function(attribute, alias) {
   Ember.Logger.warn('decorateHasMany is now depricated. Please use decorateRelation instead!');
-  return decorateRelation.bind(this)(attribute, alias);
+  return decorateRelation.call(this, attribute, alias);
 };
 
 /*
@@ -46,6 +46,6 @@ decoratedParent: decoraBelonsTo('parent', 'decoratorName')
 */
 export const decorateBelongsTo = function(attribute, alias) {
   Ember.Logger.warn('decorateBelongsTo is now depricated. Please use decorateRelation instead!');
-  return decorateRelation.bind(this)(attribute, alias);
+  return decorateRelation.call(this, attribute, alias);
 };
 
