@@ -1,5 +1,9 @@
 # Changelog
 
+
+###v0.0.5
+- REFACTOR: better context handling
+
 ###v0.0.4
 - **HOTFIX**: Recursion in method proxies setup
 
