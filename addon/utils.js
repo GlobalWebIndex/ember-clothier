@@ -8,8 +8,8 @@ import Ember from 'ember';
 export function _getModelName(model) {
   var modelName = model._modelName || model.constructor.modelName;
 
-  if (Ember.isEmpty(modelName)) {
-    Ember.Logger.error('Clothier: Unknown model name key for' + modelName + '!');
+  if (Ember.isEmpty (modelName)) {
+    Ember.Logger.error (`Clothier: Unknown model name key for ${modelName}!`);
   }
 
   return modelName;
@@ -21,9 +21,9 @@ export function _getModelName(model) {
  * @param alias[String]
  * @return String
  */
-export function _getPath(model, alias) {
-  alias = alias || _getModelName(model);
-  return 'decorator:' + alias;
+export function _getPath (model, alias) {
+  alias = alias || _getModelName (model);
+  return `decorator:${alias}`;
 }
 
 /*
@@ -32,15 +32,15 @@ export function _getPath(model, alias) {
  * @param alias[String]
  * @return Object
  */
-export function _create(model, alias) {
-  var path = _getPath.call(this, model, alias);
-  var Decorator = this.container.lookupFactory(path);
+export function _create (model, alias) {
+  var path = _getPath.call (this, model, alias);
+  var Decorator = this.container.lookupFactory (path);
 
-  if (Ember.isEmpty(Decorator)) {
-    Ember.Logger.error('Clothier: Decorator was not found' + path + '!');
+  if (Ember.isEmpty (Decorator)) {
+    Ember.Logger.error (`Clothier: Decorator was not found ${path}!`);
   }
 
-  return Decorator.create({ content: model});
+  return Decorator.create ({ content: model});
 }
 
 /*
@@ -49,10 +49,10 @@ export function _create(model, alias) {
  * @param alias[String]
  * @return Array
  */
-export function _createCollection(collection, alias) {
-  return Ember.A(collection.map(function(model) {
-    return _create.call(this, model, alias);
-  }.bind(this)));
+export function _createCollection (collection, alias) {
+  return Ember.A(collection.map ((model) => {
+    return _create.call (this, model, alias);
+  }));
 }
 
 /*
@@ -61,11 +61,11 @@ export function _createCollection(collection, alias) {
  * @param alias[String]
  * @return Array/Object
  */
-export function decorate(subject, alias) {
-  if (Ember.isArray(subject)) {
-    return _createCollection.call(this, subject, alias);
+export function decorate (subject, alias) {
+  if (Ember.isArray (subject)) {
+    return _createCollection.call (this, subject, alias);
   } else {
-    return _create.call(this, subject, alias);
+    return _create.call (this, subject, alias);
   }
 }
 
@@ -75,9 +75,9 @@ export function decorate(subject, alias) {
  * @param alias[String]
  * @return Object/Array
  */
-export function computed(attribute, alias) {
-  return Ember.computed(attribute + '.@each', attribute, function() {
-    var subject = this.get(attribute);
-    return decorate.call(this, subject, alias);
+export function computed (attribute, alias) {
+  return Ember.computed (`${attribute}.@each`, attribute, function() {
+    var subject = this.get (attribute);
+    return decorate.call (this, subject, alias);
   });
 }

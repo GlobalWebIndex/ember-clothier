@@ -7,24 +7,24 @@ import Ember from 'ember';
 
 var App, parentModel, childModel1, childModel2, store;
 module('ember-clothier/model-mixin', {
-  beforeEach: function() {
+  beforeEach() {
     App = startApp();
 
-    var ParentModel = DS.Model.extend(ModelMixin, {
+    let ParentModel = DS.Model.extend(ModelMixin, {
       name: DS.attr('string'),
       children: DS.hasMany('childModel'),
 
       activatableChildren: decorateRelation('children', 'activatable')
     });
 
-    var ChildModel = DS.Model.extend(ModelMixin, {
+    let ChildModel = DS.Model.extend(ModelMixin, {
       name: DS.attr('string'),
       parent: DS.belongsTo('parentModel'),
 
       activatableParent: decorateRelation('parent', 'activatable')
     });
 
-    var ActivatableDecorator = Decorator.extend({
+    let ActivatableDecorator = Decorator.extend({
       activated: true,
     });
 
@@ -34,22 +34,22 @@ module('ember-clothier/model-mixin', {
 
     store = App.__container__.lookup('store:application');
 
-    Ember.run(function() {
+    Ember.run(() => {
       parentModel = store.createRecord('parentModel', { name: 'name' });
       childModel1 = store.createRecord('childModel', { parent: parentModel });
       childModel2 = store.createRecord('childModel', { parent: parentModel });
     });
   },
-  afterEach: function() {
+  afterEach() {
     Ember.run(App, 'destroy');
   }
 });
 
-test('model instance can be decorated', function(assert) {
+test('model instance can be decorated', function (assert) {
   assert.equal(parentModel.decorate('activatable').get('activated'), true, 'Model instance can be decorated');
 });
 
-test('Decorating hasMany relationships', function(assert) {
+test('Decorating hasMany relationships', function (assert) {
   assert.equal(parentModel.get('activatableChildren').length, 2, 'Has decorated children');
   assert.equal(parentModel.get('activatableChildren.firstObject.activated'), true, 'Model in hasMany relationship is decorated');
 });
@@ -58,21 +58,19 @@ test('Decorating belongsTo relationships', function(assert) {
   assert.equal(childModel1.get('activatableParent.activated'), true, 'Model in belonsTo relatioonship is decorated');
 });
 
-test('Push decorator to hasMany relation (ember-data)', function(assert) {
-  var newChildModel, newDecoratedChildModel;
+test('Push decorator to hasMany relation (ember-data)', function (assert) {
+  let newChildModel, newDecoratedChildModel;
   Ember.run(() => {
     newChildModel = store.createRecord('childModel', { name: 'new child' });
     newDecoratedChildModel = newChildModel.decorate('activatable');
     parentModel.get('children').addObject(newDecoratedChildModel);
   });
 
-  andThen(() => {
-    assert.equal(parentModel.get('children').contains(newChildModel), true, 'Decorated record can be add to hasMany relation');
-  });
+  assert.equal(parentModel.get('children').contains(newChildModel), true, 'Decorated record can be add to hasMany relation');
 });
 
 
-test('Add decorated object to belongsTo relation (ember-data)', function(assert) {
+test('Add decorated object to belongsTo relation (ember-data)', function (assert) {
   var newParentModel, newDecoratedParentModel;
 
   Ember.run(() => {
@@ -81,7 +79,5 @@ test('Add decorated object to belongsTo relation (ember-data)', function(assert)
     childModel1.set('parent', newDecoratedParentModel);
   });
 
-  andThen(() => {
-    assert.equal(newParentModel.get('children').contains(childModel1), true, 'Decorated record can be add to belongsTo relation');
-  });
+  assert.equal(newParentModel.get('children').contains(childModel1), true, 'Decorated record can be add to belongsTo relation');
 });

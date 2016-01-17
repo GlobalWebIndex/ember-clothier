@@ -11,8 +11,8 @@ export default Ember.Mixin.create({
    var record = this.store.find('modelName', id);
    return record.decorate('decoratorName');
    */
-  decorate(alias) {
-    return decorate.call(this, this, alias);
+  decorate (alias) {
+    return decorate.call (this, this, alias);
   }
 });
 
@@ -23,7 +23,7 @@ export default Ember.Mixin.create({
 childrens: DS.hasmany('childrens'),
 decoratedChildrens: decorateHasMany('childrens', 'decoratorName')
 */
-export const decorateRelation = computed.bind(this);
+export const decorateRelation = computed.bind (this);
 
 /*
  * Decorate has many relation
@@ -32,9 +32,9 @@ export const decorateRelation = computed.bind(this);
 childrens: DS.hasmany('childrens'),
 decoratedChildrens: decorateHasMany('childrens', 'decoratorName')
 */
-export const decorateHasMany = function(attribute, alias) {
-  Ember.Logger.warn('decorateHasMany is now depricated. Please use decorateRelation instead!');
-  return decorateRelation.call(this, attribute, alias);
+export const decorateHasMany = function (attribute, alias) {
+  Ember.Logger.warn ('decorateHasMany is now depricated. Please use decorateRelation instead!');
+  return decorateRelation.call (this, attribute, alias);
 };
 
 /*
@@ -44,7 +44,7 @@ export const decorateHasMany = function(attribute, alias) {
 childrens: DS.belongsTo('parent'),
 decoratedParent: decoraBelonsTo('parent', 'decoratorName')
 */
-export const decorateBelongsTo = function(attribute, alias) {
-  Ember.Logger.warn('decorateBelongsTo is now depricated. Please use decorateRelation instead!');
-  return decorateRelation.call(this, attribute, alias);
+export const decorateBelongsTo = function (attribute, alias) {
+  Ember.Logger.warn ('decorateBelongsTo is now depricated. Please use decorateRelation instead!');
+  return decorateRelation.call (this, attribute, alias);
 };

@@ -1,6 +1,6 @@
 import Ember from 'ember';
 
-const o = Ember.observer;
+const observer = Ember.observer;
 const on = Ember.on;
 
 export default Ember.ObjectProxy.extend({
@@ -24,7 +24,7 @@ export default Ember.ObjectProxy.extend({
   /*
    * Setup method proxying
    */
-  _setupMethods: on('init', o('content', function(){
+  _setupMethods: on('init', observer('content', function(){
     var content = this.get('content');
 
     if (Ember.isEmpty(content)) { return; }
@@ -39,7 +39,7 @@ export default Ember.ObjectProxy.extend({
   /*
    * Setup ember data relationship keys
    */
-  _setupEmberData: on('init', o('content', function() {
+  _setupEmberData: on('init', observer('content', function() {
     var content = this.get('content');
 
     if (Ember.isEmpty(content)) { return; }
@@ -47,4 +47,3 @@ export default Ember.ObjectProxy.extend({
     this._internalModel = content._internalModel;
   }))
 });
-

@@ -5,17 +5,17 @@ import startApp from '../helpers/start-app';
 import DS from 'ember-data';
 import Ember from 'ember';
 
-var App, dataModel, appRoute;
+var App, dataModel, appRoute, store;
 module('ember-clothier/decorate-mixin', {
-  setup: function() {
+  setup() {
     App = startApp();
 
-    var DataModel = DS.Model.extend({
+    let DataModel = DS.Model.extend({
       _modelName: null,
       name: DS.attr('string')
     });
 
-    var ActivatableDecorator = Decorator.extend({
+    let ActivatableDecorator = Decorator.extend({
       activated: true,
     });
 
@@ -25,14 +25,14 @@ module('ember-clothier/decorate-mixin', {
     App.registry.register('decorator:activatable', ActivatableDecorator);
     App.registry.register('route:application', App.ApplicationRoute);
 
-    var store = App.__container__.lookup('store:application');
+    store = App.__container__.lookup('store:application');
     appRoute = App.__container__.lookup('route:application');
 
     Ember.run(() => {
       dataModel = store.createRecord('dataModel', { name: 'name' });
     });
   },
-  tearDown: function() {
+  tearDown() {
     Ember.run(App, 'destroy');
   }
 });
@@ -42,7 +42,7 @@ test('Decorate record', function(assert) {
 });
 
 test('Decorate collection', function(assert) {
-  var decoratedCollection = appRoute.decorate(Ember.A([dataModel, dataModel]), 'activatable');
+  let decoratedCollection = appRoute.decorate(Ember.A([dataModel, dataModel]), 'activatable');
 
   assert.equal(decoratedCollection.length, 2, 'Colelction decorate return array of same length');
   assert.equal(decoratedCollection.get('firstObject.activated'), true, 'Models in collections are decorated');
@@ -54,36 +54,33 @@ test('It can handle undefined', function(assert) {
 
 test('Test decorator computed property', function(assert) {
   Ember.run(() => {
-    var AppRoute = App.__container__.lookupFactory('route:application');
+    let AppRoute = App.__container__.lookupFactory('route:application');
 
     AppRoute.reopen({
-      decorated: computedDecorate('content', 'activatable')
+      filteredContent: Ember.computed('content.@each', 'content', function() {
+        return Ember.makeArray(this.get('content')).filter(m => m.get('name') !== 'forbidden');
+      }),
+      decorated: computedDecorate('filteredContent', 'activatable'),
+      decoratedObject: computedDecorate('content.firstObject', 'activatable')
     });
 
     appRoute = AppRoute.create({
       content: Ember.A([dataModel, dataModel])
     });
-  });
 
-  andThen(() => {
+    // initial
     assert.equal(Ember.isEmpty(appRoute.get('decorated')), false, 'Computed property is not empty');
     assert.equal(appRoute.get('decorated.firstObject.activated'), true, 'Computed collection is decorated');
     assert.equal(appRoute.get('decorated').length, 2, 'Default length is 2');
+    assert.equal(appRoute.get('decoratedObject.activated'), true, 'Object should be also decorated');
 
-    Ember.run(() => {
-      appRoute.get('content').pushObject(dataModel);
-    });
-  });
-
-  andThen(() => {
+    // push object
+    appRoute.get('content').pushObject(dataModel);
     assert.equal(appRoute.get('decorated').length, 3, 'Can push object to computed decorator');
 
-    Ember.run(() => {
-      appRoute.set('content', dataModel);
-    });
-  });
-
-  andThen(() => {
-    assert.equal(appRoute.get('decorated.activated'), true, 'Object should be also decorated');
+    // push filtered out
+    appRoute.get('content').pushObject(store.createRecord('data-model', { name: 'forbidden' }));
+    assert.equal(appRoute.get('content').length, 4, 'It is pushed to content');
+    assert.equal(appRoute.get('decorated').length, 3, 'It is filtered properly');
   });
 });

@@ -9,8 +9,8 @@ export default Ember.Mixin.create({
    var collection = this.store.find('modelName');
    return this.decorate(collection, 'decoratorName');
    */
-  decorate(model, alias) {
-    return decorate.call(this, model, alias);
+  decorate (model, alias) {
+    return decorate.call (this, model, alias);
   }
 });
 

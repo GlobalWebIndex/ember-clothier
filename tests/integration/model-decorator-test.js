@@ -4,31 +4,31 @@ import Decorator from 'ember-clothier/model-decorator';
 
 module('ember-clothier/model-decorator');
 
-test('can create instance', function(assert) {
-  var decorator = Decorator.create();
+test('can create instance', function (assert) {
+  let decorator = Decorator.create();
 
   assert.equal(!!decorator, true);
   assert.equal(decorator.get('content'), null, 'have no content by default');
 });
 
-test('method are proxyed to content', function(assert) {
+test('method are proxyed to content', function (assert) {
 
-  var model = Ember.Object.create({
+  let model = Ember.Object.create({
     name: 'Petr',
 
-    sayHi: function() {
+    sayHi() {
       return 'Hi, ' + this.get('name') + '!';
     },
 
-    iam: function() {
+    iam() {
       return 'model';
     }
   });
 
-  var decoratedModel = Decorator.create({
+  let decoratedModel = Decorator.create({
     content: model,
 
-    iam: function() {
+    iam() {
       return 'decorator';
     }
   });

@@ -10,12 +10,12 @@ module('ember-clothier/route-mixin', {
   setup: function() {
     App = startApp();
 
-    var DataModel = DS.Model.extend({
+    let DataModel = DS.Model.extend({
       _modelName: null,
       name: DS.attr('string')
     });
 
-    var ActivatableDecorator = Decorator.extend({
+    let ActivatableDecorator = Decorator.extend({
       activated: true,
     });
 
@@ -25,14 +25,14 @@ module('ember-clothier/route-mixin', {
     App.registry.register('decorator:activatable', ActivatableDecorator);
     App.registry.register('route:application', App.ApplicationRoute);
 
-    var store = App.__container__.lookup('store:application');
+    let store = App.__container__.lookup('store:application');
     appRoute = App.__container__.lookup('route:application');
 
-    Ember.run(function() {
+    Ember.run(() => {
       dataModel = store.createRecord('dataModel', { name: 'name' });
     });
   },
-  tearDown: function() {
+  tearDown() {
     Ember.run(App, 'destroy');
   }
 });
@@ -42,7 +42,7 @@ test('Decorate record', function(assert) {
 });
 
 test('Decorate collection', function(assert) {
-  var decoratedCollection = appRoute.decorate([dataModel, dataModel], 'activatable');
+  let decoratedCollection = appRoute.decorate([dataModel, dataModel], 'activatable');
 
   assert.equal(decoratedCollection.length, 2, 'Colelction decorate return array of same length');
   assert.equal(decoratedCollection.get('firstObject.activated'), true, 'Models in collections are decorated');
