@@ -21,4 +21,3 @@ export default Ember.Mixin.create({
  activatables: computeddecorate('model', 'activatable')
  */
 export const computedDecorate = computed.bind(this);
-

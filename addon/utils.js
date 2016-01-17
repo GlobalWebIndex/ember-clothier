@@ -50,9 +50,9 @@ export function _create(model, alias) {
  * @return Array
  */
 export function _createCollection(collection, alias) {
-  return collection.map(function(model) {
+  return Ember.A(collection.map(function(model) {
     return _create.call(this, model, alias);
-  }.bind(this));
+  }.bind(this)));
 }
 
 /*
@@ -81,4 +81,3 @@ export function computed(attribute, alias) {
     return decorate.call(this, subject, alias);
   });
 }
-

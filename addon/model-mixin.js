@@ -48,4 +48,3 @@ export const decorateBelongsTo = function(attribute, alias) {
   Ember.Logger.warn('decorateBelongsTo is now depricated. Please use decorateRelation instead!');
   return decorateRelation.call(this, attribute, alias);
 };
-

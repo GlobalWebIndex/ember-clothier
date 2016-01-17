@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import DecorateMixin, { computedDecorate } from 'ember-clothier/decorate-mixin';
+import DecorateMixin from 'ember-clothier/decorate-mixin';
 
 export default Ember.Route.extend(DecorateMixin, {
   model() {

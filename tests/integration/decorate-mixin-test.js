@@ -6,7 +6,7 @@ import DS from 'ember-data';
 import Ember from 'ember';
 
 var App, dataModel, appRoute;
-module('ember-clothier/route-mixin', {
+module('ember-clothier/decorate-mixin', {
   setup: function() {
     App = startApp();
 
@@ -28,7 +28,7 @@ module('ember-clothier/route-mixin', {
     var store = App.__container__.lookup('store:application');
     appRoute = App.__container__.lookup('route:application');
 
-    Ember.run(function() {
+    Ember.run(() => {
       dataModel = store.createRecord('dataModel', { name: 'name' });
     });
   },
@@ -42,7 +42,7 @@ test('Decorate record', function(assert) {
 });
 
 test('Decorate collection', function(assert) {
-  var decoratedCollection = appRoute.decorate([dataModel, dataModel], 'activatable');
+  var decoratedCollection = appRoute.decorate(Ember.A([dataModel, dataModel]), 'activatable');
 
   assert.equal(decoratedCollection.length, 2, 'Colelction decorate return array of same length');
   assert.equal(decoratedCollection.get('firstObject.activated'), true, 'Models in collections are decorated');
@@ -61,7 +61,7 @@ test('Test decorator computed property', function(assert) {
     });
 
     appRoute = AppRoute.create({
-      content: [dataModel, dataModel]
+      content: Ember.A([dataModel, dataModel])
     });
   });
 

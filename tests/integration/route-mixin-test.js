@@ -51,4 +51,3 @@ test('Decorate collection', function(assert) {
 test('It can handle undefined', function(assert) {
   assert.equal(appRoute.decorate(undefined, 'activatable').get('activatable'), undefined, 'undefined do not break functionality');
 });
-
