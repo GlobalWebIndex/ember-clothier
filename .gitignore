@@ -21,3 +21,5 @@ bower.json.ember-try
 # wercker
 /_builds/
 /_steps/
+/_cache/
+/async-disk-cache/

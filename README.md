@@ -1,9 +1,11 @@
 # Ember Clothier
-[![wercker status](https://app.wercker.com/status/409c0ee85a54140c6f3e37c28237bc28/s/master "wercker status")](https://app.wercker.com/project/bykey/409c0ee85a54140c6f3e37c28237bc28)
+[![Build Status](https://travis-ci.org/GlobalWebIndex/ember-clothier.svg?branch=master)](https://travis-ci.org/GlobalWebIndex/ember-clothier)
+Docker: [![wercker status](https://app.wercker.com/status/409c0ee85a54140c6f3e37c28237bc28/s/master "wercker status")](https://app.wercker.com/project/bykey/409c0ee85a54140c6f3e37c28237bc28)
+Windows: [![Build status](https://ci.appveyor.com/api/projects/status/3y37ea08jxpbw4ca/branch/master?svg=true)](https://ci.appveyor.com/project/turboMaCk/ember-clothier/branch/master)
 [![Ember Observer Score](http://emberobserver.com/badges/ember-clothier.svg)](http://emberobserver.com/addons/ember-clothier)
 [![Code Climate](https://codeclimate.com/github/GlobalWebIndex/ember-clothier/badges/gpa.svg)](https://codeclimate.com/github/GlobalWebIndex/ember-clothier)
 
-Clothier adds an **object-orientated logic** of presentation and state management for your data to your Ember application.
+Clothier adds an **object-orientated logic** for presentation and state management of your data to your Ember application.
 
 Clothier is designed for decorating your data models with presentation logic
 (which otherwise might be tangled up into procedural helpers)
