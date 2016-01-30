@@ -145,14 +145,15 @@ export default Ember.Route.extend({
 ```javascript
 // view/application.js
 import Ember from 'ember';
-import DecorateMixin, { computedDecorate } from 'ember-clothier/decorate-mixin';
+import { computedDecorateWithSetter } from 'ember-clothier/decorate-mixin';
 
-export default Ember.View.extend(DecorateMixin, {
-  activatables: computedDecorate('model', 'activatable'),
+export default Ember.View.extend({
+  model: computedDecorateWithSetter('activatable'),
 
-  activeItems: Ember.computed('activatables.@each.isActive', function() {
+  activeItems: Ember.computed('model.@each.isActive', function() {
     return this.get('activatables').filterProperty('isActive', true);
   }),
+
   actions: {
     clickOnItem(item) {
       item.toggleActive();
@@ -312,33 +313,50 @@ The difference is that Decorate methods takes two arguments where first one is m
 See Api Documentation for more informations.
 
 ### Computed Decorate
-`DecorateMixin` comes with additional helper function for creating computed property for decorating attributes.
-This helper takes two arguments ­ **attributeName** and **decoratorAlias** (decorator name) and return `Ember.computed` which return decorated attribute.
-This property is recomputed ecerytime original property is changed.
+`DecorateMixin` comes with additional helper functions for creating computed property for decorating attributes.
+
+#### computedDecorate
+This function takes two arguments ­ **attributeName** and **decoratorAlias** (decorator name) and returns `Ember.computed` which returns decorated attribute.
+This property is recomputed every-time original property is changed.
 See this simple example:
 
 ```javascript
 import Ember from 'ember';
-import DecorateMixin, { computedDecorate } from 'ember-clothier/decorate-mixin';
+import { computedDecorate } from 'ember-clothier/decorate-mixin';
 
 export defualt Ember.Component.extend({
   // this property is bind from parrent component
   content: [],
-  searchables: computedDecorate('content', 'searchable')
+  searchables: computedDecorate ('content', 'searchable')
 });
 ```
 
+### Computed Decorate with Setter
+This function takes one argumnet **decoratorAlias** (decorator name) and returns `Ember.computed` which return decorated attribute.
+This property is recomputed every-time you call `set` on this property. It returns previous value when you call `get` on it.
+Example code:
+
+```javascript
+import Ember from 'ember';
+import { computedDecorateWithSetter } from 'ember-clothier/decorate-mixin';
+
+export default Ember.Component.extend({
+  content: computedDecorateWithSetter ('searchable')
+});
+
+then you can bind or set any property to `content` and it will be atomatically decorated with `searchable` decorator.
+
 ## Api Documentation
 
-| Class/Helper      | Method   | Import from    | Arguments                                     | Return                 |
-| ------------      | ------   | -----------    | ---------                                     | ------                 |
-| RouteMixin        |          | decorate-mixin |                                               |                        |
-|                   | decorate |                | subject[Array/Object], decoratorAlias[String] | decoratedModel[Object] |
-| computedDecorate  |          | decorate-mixin | attribute[String], decoratorAlias[String]     | Ember.computed         |
-| ModelMixin        |          | model-mixin    |                                               |                        |
-|                   | decorate |                | decoratorAlias[String]                        | decoratedModel[Object] |
-| decorateBelongsTo |          | model-mixin    | relationKey[String], decoratorAlias[String]   | Ember.computed         |
-| decorateHasMany   |          | model-mixin    | relationKey[String], decoratorAlias[String]   | Ember.computed         |
+| Class/Helper               | Method   | Import from    | Arguments                                     | Return                 |
+| ------------               | ------   | -----------    | ---------                                     | ------                 |
+| RouteMixin                 |          | decorate-mixin |                                               |                        |
+|                            | decorate |                | subject[Array/Object], decoratorAlias[String] | decoratedModel[Object] |
+| computedDecorate           |          | decorate-mixin | attribute[String], decoratorAlias[String]     | Ember.computed         |
+| computedDecorateWithSetter |          | decorate-mixin | decoratorAlias[String]                        | Ember.computed         |
+| ModelMixin                 |          | model-mixin    |                                               |                        |
+|                            | decorate |                | decoratorAlias[String]                        | decoratedModel[Object] |
+| decorateRelation           |          | model-mixin    | relationKey[String], decoratorAlias[String]   | Ember.computed         |
 
 **Examples of imports:**
 ```javascript
@@ -346,7 +364,10 @@ export defualt Ember.Component.extend({
 import DecorateMixin from 'ember-clothier/decorate-mixin';
 
 // computedDecorate
-import { computedDecorate } from 'ember-clothier/computed-decorate';
+import { computedDecorate } from 'ember-clothier/decorate-mixin';
+
+// computedDecorateWithSetter
+import { computedDecorateWithSetter } from 'ember-clothier/decorate-mixin';
 
 // ModelMixin
 import DecorateModelMixin from 'ember-clothier/model-mixin';
