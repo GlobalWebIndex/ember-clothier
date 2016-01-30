@@ -1,6 +1,6 @@
 import { module, test } from 'qunit';
 import Decorator from 'ember-clothier/model-decorator';
-import DecorateMixin, { computedDecorate } from 'ember-clothier/decorate-mixin';
+import DecorateMixin, { computedDecorate, computedDecorateWithSetter } from 'ember-clothier/decorate-mixin';
 import startApp from '../helpers/start-app';
 import DS from 'ember-data';
 import Ember from 'ember';
@@ -82,5 +82,21 @@ test('Test decorator computed property', function(assert) {
     appRoute.get('content').pushObject(store.createRecord('data-model', { name: 'forbidden' }));
     assert.equal(appRoute.get('content').length, 4, 'It is pushed to content');
     assert.equal(appRoute.get('decorated').length, 3, 'It is filtered properly');
+  });
+});
+
+test('Test can handle setter over computed decorate', function (assert) {
+  Ember.run(() => {
+    let AppRoute = App.__container__.lookupFactory('route:application');
+
+    AppRoute.reopen({
+      decorated: computedDecorateWithSetter ('activatable')
+    });
+
+    appRoute = AppRoute.create();
+
+    appRoute.set('decorated', Ember.A([dataModel, dataModel]));
+    assert.equal(appRoute.get('decorated.firstObject.activated'), true, 'first Object is decorated');
+    assert.equal(appRoute.get('decorated.lastObject.activated'), true, 'last Object is decorated');
   });
 });

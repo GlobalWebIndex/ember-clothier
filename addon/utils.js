@@ -73,11 +73,27 @@ export function decorate (subject, alias) {
  * create computed decorator
  * @param attribute[String]
  * @param alias[String]
- * @return Object/Array
+ * @return Object[Ember.computed]
  */
 export function computed (attribute, alias) {
-  return Ember.computed (`${attribute}.@each`, attribute, function() {
-    var subject = this.get (attribute);
+  return Ember.computed (`${attribute}.@each`, attribute, function () {
+    let subject = this.get (attribute);
     return decorate.call (this, subject, alias);
+  });
+}
+
+/*
+ * create computed with setter
+ * @param alias[String]
+ * @return Object[Ember.computed]
+ */
+export function computedWithSetter (alias) {
+  return Ember.computed (function (attribute, value) {
+    const chacheAttr = `_decorated${attribute}`;
+    if (value) {
+      this.set (chacheAttr, decorate.call (this, value, alias));
+    }
+
+    return this.get (chacheAttr);
   });
 }
