@@ -373,11 +373,8 @@ import { computedDecorateWithSetter } from 'ember-clothier/decorate-mixin';
 // ModelMixin
 import DecorateModelMixin from 'ember-clothier/model-mixin';
 
-// decorateBelongsTo
-import { decorateBelongsTo } from 'ember-clothier/model-mixin';
-
-// decorateHasMany
-import { decorateHasMany } from 'ember-clothier/model-mixin';
+// decorateRelation
+import { decorateRelation } from 'ember-clothier/model-mixin';
 ```
 
 ## Changelog
