@@ -331,7 +331,7 @@ export defualt Ember.Component.extend({
 });
 ```
 
-### Computed Decorate with Setter
+#### computedDecorateWithSetter
 This function takes one argumnet **decoratorAlias** (decorator name) and returns `Ember.computed` which return decorated attribute.
 This property is recomputed every-time you call `set` on this property. It returns previous value when you call `get` on it.
 Example code:
@@ -343,6 +343,7 @@ import { computedDecorateWithSetter } from 'ember-clothier/decorate-mixin';
 export default Ember.Component.extend({
   content: computedDecorateWithSetter ('searchable')
 });
+```
 
 then you can bind or set any property to `content` and it will be atomatically decorated with `searchable` decorator.
 
