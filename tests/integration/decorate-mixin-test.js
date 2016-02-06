@@ -1,6 +1,6 @@
 import { module, test } from 'qunit';
 import Decorator from 'ember-clothier/model-decorator';
-import DecorateMixin, { computedDecorate, computedDecorateWithSetter } from 'ember-clothier/decorate-mixin';
+import DecorateMixin, { computedDecorate, decoratorFactory } from 'ember-clothier/decorate-mixin';
 import startApp from '../helpers/start-app';
 import DS from 'ember-data';
 import Ember from 'ember';
@@ -85,12 +85,12 @@ test('Test decorator computed property', function(assert) {
   });
 });
 
-test('Test can handle setter over computed decorate', function (assert) {
+test('Test can handle setter over computed decorate in decoratorFactory', function (assert) {
   Ember.run(() => {
     let AppRoute = App.__container__.lookupFactory('route:application');
 
     AppRoute.reopen({
-      decorated: computedDecorateWithSetter ('activatable')
+      decorated: decoratorFactory ('activatable')
     });
 
     appRoute = AppRoute.create();

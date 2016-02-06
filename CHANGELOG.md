@@ -2,7 +2,7 @@
 
 ### v0.1.0
 - DEPRICATIONS: Remove all depricated APIS from `0.0.x`
-- FEATURE: Add `computedDecorateWithSetter`
+- FEATURE: Add `decoratorFactory`
 
 ### v0.0.5
 - REFACTOR: better context handling

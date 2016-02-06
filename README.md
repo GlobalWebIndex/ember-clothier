@@ -145,10 +145,10 @@ export default Ember.Route.extend({
 ```javascript
 // view/application.js
 import Ember from 'ember';
-import { computedDecorateWithSetter } from 'ember-clothier/decorate-mixin';
+import { decoratorFactory } from 'ember-clothier/decorate-mixin';
 
 export default Ember.View.extend({
-  model: computedDecorateWithSetter('activatable'),
+  model: decoratorFactory('activatable'),
 
   activeItems: Ember.computed('model.@each.isActive', function() {
     return this.get('activatables').filterProperty('isActive', true);
@@ -327,21 +327,21 @@ import { computedDecorate } from 'ember-clothier/decorate-mixin';
 export defualt Ember.Component.extend({
   // this property is bind from parrent component
   content: [],
-  searchables: computedDecorate ('content', 'searchable')
+  searchables: computedDecorate('content', 'searchable')
 });
 ```
 
-#### computedDecorateWithSetter
+#### decoratorFactory
 This function takes one argumnet **decoratorAlias** (decorator name) and returns `Ember.computed` which return decorated attribute.
 This property is recomputed every-time you call `set` on this property. It returns previous value when you call `get` on it.
 Example code:
 
 ```javascript
 import Ember from 'ember';
-import { computedDecorateWithSetter } from 'ember-clothier/decorate-mixin';
+import { decoratorFactory } from 'ember-clothier/decorate-mixin';
 
 export default Ember.Component.extend({
-  content: computedDecorateWithSetter ('searchable')
+  content: decoratorFactory('searchable')
 });
 ```
 
@@ -349,15 +349,15 @@ then you can bind or set any property to `content` and it will be atomatically d
 
 ## Api Documentation
 
-| Class/Helper               | Method   | Import from    | Arguments                                     | Return                 |
-| ------------               | ------   | -----------    | ---------                                     | ------                 |
-| RouteMixin                 |          | decorate-mixin |                                               |                        |
-|                            | decorate |                | subject[Array/Object], decoratorAlias[String] | decoratedModel[Object] |
-| computedDecorate           |          | decorate-mixin | attribute[String], decoratorAlias[String]     | Ember.computed         |
-| computedDecorateWithSetter |          | decorate-mixin | decoratorAlias[String]                        | Ember.computed         |
-| ModelMixin                 |          | model-mixin    |                                               |                        |
-|                            | decorate |                | decoratorAlias[String]                        | decoratedModel[Object] |
-| decorateRelation           |          | model-mixin    | relationKey[String], decoratorAlias[String]   | Ember.computed         |
+| Class/Helper     | Method   | Import from    | Arguments                                     | Return                 |
+| ------------     | ------   | -----------    | ---------                                     | ------                 |
+| RouteMixin       |          | decorate-mixin |                                               |                        |
+|                  | decorate |                | subject[Array/Object], decoratorAlias[String] | decoratedModel[Object] |
+| computedDecorate |          | decorate-mixin | attribute[String], decoratorAlias[String]     | Ember.computed         |
+| decoratorFactory |          | decorate-mixin | decoratorAlias[String]                        | Ember.computed         |
+| ModelMixin       |          | model-mixin    |                                               |                        |
+|                  | decorate |                | decoratorAlias[String]                        | decoratedModel[Object] |
+| decorateRelation |          | model-mixin    | relationKey[String], decoratorAlias[String]   | Ember.computed         |
 
 **Examples of imports:**
 ```javascript
@@ -367,8 +367,8 @@ import DecorateMixin from 'ember-clothier/decorate-mixin';
 // computedDecorate
 import { computedDecorate } from 'ember-clothier/decorate-mixin';
 
-// computedDecorateWithSetter
-import { computedDecorateWithSetter } from 'ember-clothier/decorate-mixin';
+// decoratorFactory
+import { decoratorFactory } from 'ember-clothier/decorate-mixin';
 
 // ModelMixin
 import DecorateModelMixin from 'ember-clothier/model-mixin';

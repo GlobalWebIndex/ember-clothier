@@ -6,8 +6,8 @@ export default Ember.Mixin.create ({
    * Create decorated collection/object
    * USAGE:
 
-   var collection = this.store.find ('modelName');
-   return this.decorate (collection, 'decoratorName');
+   var collection = this.store.find('modelName');
+   return this.decorate(collection, 'decoratorName');
    */
   decorate (model, alias) {
     return decorate.call (this, model, alias);
@@ -23,9 +23,9 @@ export default Ember.Mixin.create ({
 export const computedDecorate = computed.bind (this);
 
 /*
- * Create computed decorator with setter support
+ * Create decorator factory
  * Usage:
 
- activatables: computedDecorateWithSetter ('activatable')
+ activatables: decoratorFactory('activatable')
  */
-export const computedDecorateWithSetter = computedWithSetter.bind (this);
+export const decoratorFactory = computedWithSetter.bind (this);
