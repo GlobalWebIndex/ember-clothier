@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import { decorate, computed, computedWithSetter } from './utils';
+import { decorate, computed, computedWithSetter, parseParams } from './utils';
 
 export default Ember.Mixin.create ({
   /*
@@ -9,8 +9,10 @@ export default Ember.Mixin.create ({
    var collection = this.store.find('modelName');
    return this.decorate(collection, 'decoratorName');
    */
-  decorate (model, alias) {
-    return decorate.call (this, model, alias);
+  decorate () {
+    let [model, decorator_names] = parseParams(arguments);
+
+    return decorate.call (this, model, decorator_names);
   }
 });
 

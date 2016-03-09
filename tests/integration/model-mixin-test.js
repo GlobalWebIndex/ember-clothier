@@ -14,7 +14,7 @@ module('ember-clothier/model-mixin', {
       name: DS.attr('string'),
       children: DS.hasMany('childModel'),
 
-      activatableChildren: decorateRelation('children', 'activatable')
+      decoratedChildren: decorateRelation('children', 'activatable', 'editable')
     });
 
     let ChildModel = DS.Model.extend(ModelMixin, {
@@ -28,9 +28,14 @@ module('ember-clothier/model-mixin', {
       activated: true,
     });
 
+    let EditableDecorator = Decorator.extend({
+      edited: true,
+    });
+
     App.registry.register('model:parent-model', ParentModel);
     App.registry.register('model:child-model', ChildModel);
     App.registry.register('decorator:activatable', ActivatableDecorator);
+    App.registry.register('decorator:editable', EditableDecorator);
 
     store = App.__container__.lookup('store:application');
 
@@ -50,8 +55,9 @@ test('model instance can be decorated', function (assert) {
 });
 
 test('Decorating hasMany relationships', function (assert) {
-  assert.equal(parentModel.get('activatableChildren').length, 2, 'Has decorated children');
-  assert.equal(parentModel.get('activatableChildren.firstObject.activated'), true, 'Model in hasMany relationship is decorated');
+  assert.equal(parentModel.get('decoratedChildren').length, 2, 'Has decorated children');
+  assert.equal(parentModel.get('decoratedChildren.firstObject.activated'), true, 'Model in hasMany relationship is activable');
+  assert.equal(parentModel.get('decoratedChildren.firstObject.edited'), true, 'Model in hasMany relationship is editable');
 });
 
 test('Decorating belongsTo relationships', function(assert) {

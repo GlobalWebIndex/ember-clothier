@@ -279,6 +279,22 @@ export default Ember.Route.extend({
 });
 ```
 
+### Multiple decorating
+You can also decorate your model by multiple decorators what clear
+the way for keep decorators simple sensual.
+
+```javascript
+// we have a activable decorator with 'actived' property in addition
+// and editable decorator with 'edited' property in addition.
+
+// eg. for relations
+decoratedChildren: decorateRelation('children', 'activatable', 'editable');
+
+// eg. in Route with decorator mixin
+// export default Ember.Route.extend(DecorateMixin, {
+this.controllerFor('bookmarks').set('model', this.decorate(items, 'activable', 'editable');
+```
+
 ### Decorating relationships
 `ModelMixin` comes with additional helper function for decorating model relationships.
 This helper takes two arguments ­ *relationKey* and *decoratorAlias*(name of decorator) and return `Ember.computed` which returns decorated relationship.

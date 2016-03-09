@@ -19,10 +19,15 @@ module('ember-clothier/decorate-mixin', {
       activated: true,
     });
 
+    let EditableDecorator = Decorator.extend({
+      edited: true,
+    });
+
     App.ApplicationRoute = Ember.Route.extend(DecorateMixin);
 
     App.registry.register('model:data-model', DataModel);
     App.registry.register('decorator:activatable', ActivatableDecorator);
+    App.registry.register('decorator:editable', EditableDecorator);
     App.registry.register('route:application', App.ApplicationRoute);
 
     store = App.__container__.lookup('store:application');
@@ -39,6 +44,13 @@ module('ember-clothier/decorate-mixin', {
 
 test('Decorate record', function(assert) {
   assert.equal(appRoute.decorate(dataModel, 'activatable').get('activated'), true, 'Can decorate model witin route');
+});
+
+test('Multi decorating record', function(assert) {
+  let decoratedModel = appRoute.decorate(dataModel, 'activatable', 'editable');
+
+  assert.equal(decoratedModel.get('activated'), true, 'Decorate model with activable stuff');
+  assert.equal(decoratedModel.get('edited'), true, 'Decorate model with editable stuff');
 });
 
 test('Decorate collection', function(assert) {
@@ -60,25 +72,28 @@ test('Test decorator computed property', function(assert) {
       filteredContent: Ember.computed('content.@each', 'content', function() {
         return Ember.makeArray(this.get('content')).filter(m => m.get('name') !== 'forbidden');
       }),
-      decorated: computedDecorate('filteredContent', 'activatable'),
-      decoratedObject: computedDecorate('content.firstObject', 'activatable')
+      decorated: computedDecorate('filteredContent', 'activatable', 'editable'),
+      decoratedObject: computedDecorate('content.firstObject', 'activatable', 'editable')
     });
 
     appRoute = AppRoute.create({
       content: Ember.A([dataModel, dataModel])
     });
 
-    // initial
+    //initial
     assert.equal(Ember.isEmpty(appRoute.get('decorated')), false, 'Computed property is not empty');
-    assert.equal(appRoute.get('decorated.firstObject.activated'), true, 'Computed collection is decorated');
-    assert.equal(appRoute.get('decorated').length, 2, 'Default length is 2');
-    assert.equal(appRoute.get('decoratedObject.activated'), true, 'Object should be also decorated');
+    assert.equal(appRoute.get('decorated.firstObject.activated'), true, 'Computed collection is activable');
+    assert.equal(appRoute.get('decorated.firstObject.edited'), true, 'Computed collection is editable');
 
-    // push object
+    assert.equal(appRoute.get('decorated').length, 2, 'Default length is 2');
+    assert.equal(appRoute.get('decoratedObject.activated'), true, 'Object should be also activable');
+    assert.equal(appRoute.get('decoratedObject.edited'), true, 'Object should be also editable');
+
+    //push object
     appRoute.get('content').pushObject(dataModel);
     assert.equal(appRoute.get('decorated').length, 3, 'Can push object to computed decorator');
 
-    // push filtered out
+    //push filtered out
     appRoute.get('content').pushObject(store.createRecord('data-model', { name: 'forbidden' }));
     assert.equal(appRoute.get('content').length, 4, 'It is pushed to content');
     assert.equal(appRoute.get('decorated').length, 3, 'It is filtered properly');

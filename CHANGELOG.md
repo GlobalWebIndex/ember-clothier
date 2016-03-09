@@ -1,5 +1,8 @@
 # Changelog
 
+### v0.2.0
+- FEATURE: support for multiple decorating `decorate(mode, 'activable', 'editable')`
+
 ### v0.1.0
 - DEPRICATIONS: Remove all depricated APIS from `0.0.x`
 - FEATURE: Add `decoratorFactory`
