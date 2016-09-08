@@ -124,12 +124,15 @@ export function computed () {
  * @return Object[Ember.computed]
  */
 export function computedWithSetter (DecoratorNames) {
-  return Ember.computed (function (attribute, value) {
-    const chacheAttr = `_decorated${attribute}`;
-    if (value) {
+  return Ember.computed ({
+    set(attribute, value) {
+      const chacheAttr = `_decorated${attribute}`;
       this.set (chacheAttr, decorate.call (this, value, DecoratorNames));
+      return this.get (chacheAttr);
+    },
+    get(attribute) {
+      const chacheAttr = `_decorated${attribute}`;
+      return this.get (chacheAttr);
     }
-
-    return this.get (chacheAttr);
   });
 }

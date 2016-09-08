@@ -189,10 +189,10 @@ This plugin is compatible with various version of Ember and Ember Data.
 | Ember Version          | compatibility   |
 | ---------------        | --------------- |
 | Ember 1.10.x and older | no              |
-| Ember 1.11.x           | OK              |
-| Ember 1.12.x           | OK              |
-| Ember 1.13.x           | OK              |
-| Ember 2.x.x            | no              |
+| Ember 1.11.x           | 0.2.0           |
+| Ember 1.12.x           | 1.0.0           |
+| Ember 1.13.x           | 1.0.0           |
+| Ember 2.x.x            | comming         |
 
 **Ember 2 compatibility coming soon!**
 
@@ -201,7 +201,7 @@ This plugin is compatible with various version of Ember and Ember Data.
 | Ember Data 1.0.0-beta18 and older | unknown       |
 | Ember Data 1.0.0-beta19.x         | OK            |
 | Ember Data 1.13.x                 | OK            |
-| Ember Data 2.x.x                  | unknown       |
+| Ember Data 2.x.x                  | comming       |
 
 ## Writing decorators
 Put your decorators in `app/decorators` directory.
